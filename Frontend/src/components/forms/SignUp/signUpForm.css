@@ -1,0 +1,10 @@
+.mantine-Stepper-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: auto auto;
+    grid-gap: 10px;
+}
+
+.m_aaf89d0b {
+    display: grid !important;
+}
