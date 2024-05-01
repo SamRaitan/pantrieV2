@@ -22,18 +22,22 @@ type Recipe = {
 
 type createPost = {
     title: string;
-    image: string;
+    image: any;
     ingredients: string[];
     steps: string[];
     description: string;
-    cookTime?: string;
-    prepTime?: string;
-    servings: string;
+    cookTime: string | undefined;
+    prepTime?: string | undefined;
+    servings: string | number;
     cuisine: string;
     dishType: string;
     visibility: string;
 }
-// Request to check if user is logged in
+
+type createResponse = {
+    data: string;
+}
+
 type IsLoggedInResponse = {
     data: 'success';
 }

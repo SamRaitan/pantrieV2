@@ -1,4 +1,5 @@
 import { baseApi } from '.';
+import { createPost, createResponse } from '../types/recipe';
 
 export const recipeApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
@@ -9,9 +10,9 @@ export const recipeApi = baseApi.injectEndpoints({
                 body: userData,
             }),
         }),
-        recipes: build.mutation<SignInResponse, SignInRequestBody>({
+        postRecipes: build.mutation<createResponse, createPost>({
             query: (userData) => ({
-                url: 'api/signin',
+                url: 'api/create',
                 method: 'POST',
                 body: userData,
             }),
@@ -21,6 +22,6 @@ export const recipeApi = baseApi.injectEndpoints({
 
 
 export const {
-    useRecipesMutation,
+    usePostRecipesMutation,
     useGetRecipesQuery
 } = recipeApi;

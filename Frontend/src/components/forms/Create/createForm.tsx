@@ -1,29 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { Button, TextInput, FileInput, Grid, Text, Fieldset, Stack, Textarea, NumberInput, Group, SegmentedControl, Select } from '@mantine/core';
-import { useForm } from '@mantine/form';
+import { useForm, yupResolver } from '@mantine/form';
+import { notifications } from '@mantine/notifications';
 import { FiXCircle } from "react-icons/fi";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 import { cuisines } from '../../../utils/cuisines';
 import { dishTypes } from '../../../utils/dishType';
-
-type createPost = {
-    title: string;
-    image: any;
-    ingredients: string[];
-    steps: string[];
-    description: string;
-    cookTime: string | undefined;
-    prepTime?: string | undefined;
-    servings: string | number;
-    cuisine: string;
-    dishType: string;
-    visibility: string;
-}
+import { createPost } from '../../../types/recipe';
+import createSchema from './validation'
+import { useDispatch } from 'react-redux';
+import { usePostRecipesMutation } from '../../../selectors/recipes';
 
 function CreateForm() {
     const [ingredients, setIngredients] = useState([{ value: '' }]);
     const [steps, setSteps] = useState([{ value: '' }]);
     const [formCookTime, setFormCookTime] = useState<string>();
     const [formPrepTime, setFormPrepTime] = useState<string>();
+
+    const dispatch = useDispatch();
+    const [createRecipe, { isLoading }] = usePostRecipesMutation();
 
     const form = useForm<createPost>({
         initialValues: {
@@ -40,6 +35,7 @@ function CreateForm() {
             visibility: 'Public',
 
         },
+        validate: yupResolver(createSchema)
     });
 
     // Update form values when ingredients change
@@ -112,9 +108,22 @@ function CreateForm() {
         const newPrepTime = `${time} ${unit}`
         setFormPrepTime(newPrepTime);
         form.setFieldValue('prepTime', newPrepTime);
-
-
     };
+
+
+    const submit = async (data: any) => {
+        if (form.validate().hasErrors) {
+            return form.values
+        } else {
+            const response = await createRecipe(data)
+            console.log(response);
+            console.log(data);
+
+
+        }
+
+
+    }
 
     return (
         <>
@@ -128,6 +137,7 @@ function CreateForm() {
                 />
                 <FileInput
                     p={10}
+                    withAsterisk
                     variant="filled"
                     label="Recipe Image"
                     placeholder="enter valid image"
@@ -155,6 +165,7 @@ function CreateForm() {
                             <Grid gutter="3">
                                 <Grid.Col span={10}>
                                     <TextInput
+                                        withAsterisk
                                         radius="md"
                                         placeholder="e.g. 2 tbs Sugar"
                                         value={ingredient.value}
@@ -184,6 +195,7 @@ function CreateForm() {
                                 <Grid.Col span={10}>
                                     <TextInput
                                         radius="md"
+                                        withAsterisk
                                         placeholder="step.."
                                         value={step.value}
                                         onChange={(event) => handleStepChange(index, event)}
@@ -208,6 +220,7 @@ function CreateForm() {
                     label="Recipe Description"
                     autosize
                     minRows={4}
+                    withAsterisk
                     {...form.getInputProps('description')}
                 />
             </Fieldset>
@@ -218,6 +231,7 @@ function CreateForm() {
                         <Grid.Col span={4}>
                             <NumberInput
                                 radius="md"
+                                withAsterisk
                                 label="Cook Time"
                                 placeholder="e.g. 1"
                                 onChange={(value: any) => cookTime(value)}
@@ -227,6 +241,7 @@ function CreateForm() {
                             <Select
                                 radius="md"
                                 label="Time Unit"
+                                withAsterisk
                                 placeholder="enter time unit"
                                 data={['Minutes', 'Hours', 'Days', 'Weeks']}
                                 onChange={(event) => cookTimeUnit(event)}
@@ -235,6 +250,7 @@ function CreateForm() {
                         <Grid.Col span={4}>
                             <NumberInput
                                 radius="md"
+                                withAsterisk
                                 label="Prep Time"
                                 placeholder="e.g. 3"
                                 onChange={(value: any) => prepTime(value)}
@@ -243,6 +259,7 @@ function CreateForm() {
                         <Grid.Col span={8}>
                             <Select
                                 radius="md"
+                                withAsterisk
                                 label="Time Unit"
                                 placeholder="enter time unit"
                                 data={['Minutes', 'Hours', 'Days', 'Weeks']}
@@ -270,6 +287,7 @@ function CreateForm() {
                 <Select
                     m={5}
                     radius="md"
+                    withAsterisk
                     label="Cuisine"
                     data={cuisines}
                     placeholder="cuisine type"
@@ -280,6 +298,7 @@ function CreateForm() {
                     m={5}
                     radius="md"
                     label="Dish Type"
+                    withAsterisk
                     placeholder="what type of dish?"
                     data={dishTypes}
                     {...form.getInputProps('dishType')}
@@ -295,9 +314,7 @@ function CreateForm() {
             />
 
             <Group justify="center" mt="md">
-                <Button onClick={() => {
-                    console.log(form.values);
-                }}>Post it!</Button>
+                <Button onClick={() => submit(form.values)}>Post it!</Button>
             </Group>
         </>
     );
