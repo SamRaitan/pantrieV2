@@ -28,19 +28,27 @@ function Create() {
     }, [open]);
 
     return (
-        <div
-            style={{
-                backgroundImage: `url(${imageUrls[currentImageIndex]})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                width: '100vw',
-                height: '100vh',
-            }}
-        >
-            <Modal opened={opened} onClose={open} title="Create Recipe Post" withCloseButton={false} centered>
-                <CreateForm children={undefined} active={0} />
-            </Modal>
+        <div className='mantine-Modal-root'>
+
+            <div
+                style={{
+                    backgroundImage: `url(${imageUrls[currentImageIndex]})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    width: '100vw',
+                    height: '100vh',
+                }}
+            >
+                <Modal opened={opened} onClose={open} title="Create Recipe Post" withCloseButton={false} yOffset={100} centered overlayProps={{
+                    backgroundOpacity: 0.55,
+                    blur: 3,
+                    mt: 50
+                }}>
+                    <CreateForm />
+                </Modal>
+            </div>
         </div>
+
     );
 }
 

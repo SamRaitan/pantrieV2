@@ -20,6 +20,19 @@ type Recipe = {
     updatedAt: Date;
 }
 
+type createPost = {
+    title: string;
+    image: string;
+    ingredients: string[];
+    steps: string[];
+    description: string;
+    cookTime?: string;
+    prepTime?: string;
+    servings: string;
+    cuisine: string;
+    dishType: string;
+    visibility: string;
+}
 // Request to check if user is logged in
 type IsLoggedInResponse = {
     data: 'success';
