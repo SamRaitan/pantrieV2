@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const cuisines = require('../utils/cuisineList')
+const foodTypes = require('../utils/foodType')
 
 const recipeSchema = new Schema({
 
@@ -41,14 +43,14 @@ const recipeSchema = new Schema({
     type: String,
     required: true
   },
-  foodType: {
+  dishType: {
     type: String,
-    enum: ['Main', 'Appetizer', 'Side', 'Dessert', 'Beverage', 'Kids'],
+    enum: foodTypes,
     required: true
   },
   cuisine: {
     type: String,
-    enum: ['Japanese', 'Italian', 'French', 'Israeli', 'American', 'Chinese', 'Moroccan'],
+    enum: cuisines,
     required: true
   },
   visibility: {

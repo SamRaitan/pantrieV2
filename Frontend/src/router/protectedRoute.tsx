@@ -9,7 +9,6 @@ interface ProtectedRouteProps extends RouteProps {
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ component: Component, ...rest }) => {
     const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
-    console.log(isAuthenticated);
 
     return (
         <Route

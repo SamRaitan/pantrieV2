@@ -12,14 +12,14 @@ const isLoggedIn = (req, res, next) => {
         jwt.verify(token, process.env.COOKIE_SALT, (err, decodedToken) => {
             if (err) {
                 console.log(err.message)
-                res.redirect('signin')
+                res.status(401).json({ 'error': 'user unauthorized' });
             } else {
                 console.log(decodedToken)
                 next();
             }
         })
     } else {
-        res.redirect('signin')
+        res.status(401).json({ 'error': 'user unauthorized' });
     }
 }
 

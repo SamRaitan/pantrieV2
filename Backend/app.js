@@ -4,7 +4,8 @@ const mongoose = require('mongoose');
 const SignUp = require('./routes/SignUp/endpoints/signUp');
 const SignIn = require('./routes/SignIn/endpoints/signIn');
 const Profile = require('./routes/Profile/profile');
-const Recipes = require('./models/recipe');
+const Recipes = require('./routes/Recipes/recipes')
+const RecipePost = require('./models/recipe');
 const User = require('./models/user');
 const cookieParser = require('cookie-parser')
 const jwt = require('jsonwebtoken')
@@ -48,7 +49,7 @@ app.put('*', userInfo)
 // });
 
 app.get('/', (req, res) => {
-  Recipes.find().sort({ createdAt: -1 })
+  RecipePost.find().sort({ createdAt: -1 })
     .then(result => {
       res.json({ 'data': result });
     })
@@ -67,6 +68,8 @@ app.use(SignUp)
 app.use(SignIn)
 
 app.use(Profile)
+
+app.use(Recipes)
 
 // // 404 page
 // app.use((req, res) => {

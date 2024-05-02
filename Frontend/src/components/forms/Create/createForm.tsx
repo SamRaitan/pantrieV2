@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, TextInput, FileInput, Grid, Text, Fieldset, Stack, Textarea, NumberInput, Group, SegmentedControl, Select } from '@mantine/core';
+import { Button, TextInput, FileInput, Grid, Text, Fieldset, Stack, Textarea, NumberInput, Group, SegmentedControl, Select, LoadingOverlay } from '@mantine/core';
 import { useForm, yupResolver } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { FiXCircle } from "react-icons/fi";
@@ -10,6 +10,15 @@ import { createPost } from '../../../types/recipe';
 import createSchema from './validation'
 import { useDispatch } from 'react-redux';
 import { usePostRecipesMutation } from '../../../selectors/recipes';
+import { clearUser } from '../../../slice/authSlice';
+
+type createPostError = {
+    error: {
+        data: string;
+        status: number;
+    }
+
+}
 
 function CreateForm() {
     const [ingredients, setIngredients] = useState([{ value: '' }]);
@@ -110,212 +119,223 @@ function CreateForm() {
         form.setFieldValue('prepTime', newPrepTime);
     };
 
-
     const submit = async (data: any) => {
         if (form.validate().hasErrors) {
             return form.values
         } else {
             const response = await createRecipe(data)
-            console.log(response);
-            console.log(data);
-
-
+            if ('error' in response) {
+                if ((response as createPostError).error.status === 401) {
+                    dispatch(clearUser());
+                    window.location.href = '/signin';
+                }
+            } else {
+                window.location.href = '/';
+            }
         }
-
-
     }
 
     return (
         <>
-            <Fieldset legend="Recipe Cover">
-                <TextInput
-                    radius="md"
-                    label="Recipe Title"
-                    withAsterisk
-                    placeholder="enter recipe name"
-                    {...form.getInputProps('title')}
-                />
-                <FileInput
-                    p={10}
-                    withAsterisk
-                    variant="filled"
-                    label="Recipe Image"
-                    placeholder="enter valid image"
-                    accept=".png,.jpeg,.jpg"
-                    onChange={(file: File | null) => {
-                        if (file) {
-                            // Check if the file type is PNG or JPEG
-                            if (file.type === 'image/png' || file.type === 'image/jpeg') {
-                                const fileURL = URL.createObjectURL(file);
-                                form.setFieldValue('image', fileURL);
-                            } else {
-                                // Notify the user about the invalid file type
-                                alert('Please upload only PNG or JPEG files.');
-                            }
-                        }
-                    }}
-                />
-            </Fieldset>
-
-            <Fieldset legend="Recipe Ingredients">
-                <Stack m={10} align="stretch" justify="center" gap="md">
-                    {ingredients.map((ingredient, index) => (
-                        <div key={index}>
-                            <Text>{`Ingredient ${index + 1}`}</Text>
-                            <Grid gutter="3">
-                                <Grid.Col span={10}>
-                                    <TextInput
-                                        withAsterisk
-                                        radius="md"
-                                        placeholder="e.g. 2 tbs Sugar"
-                                        value={ingredient.value}
-                                        onChange={(event) => handleIngredientChange(index, event)}
-                                    />
-                                </Grid.Col>
-                                <Grid.Col span={2}>
-                                    <Button onClick={() => handleDeleteIngredient(index)} variant="subtle" color="red">
-                                        <FiXCircle style={{ fontSize: '20px' }} />
-                                    </Button>
-                                </Grid.Col>
-                            </Grid>
-                        </div>
-                    ))}
-                    <Button onClick={handleAddIngredient} variant="outline">
-                        Add Ingredient
-                    </Button>
-                </Stack>
-            </Fieldset>
-
-            <Fieldset legend="Cooking Method">
-                <Stack m={10} align="stretch" justify="center" gap="md">
-                    {steps.map((step, index) => (
-                        <div key={index}>
-                            <Text>{`Step ${index + 1}`}</Text>
-                            <Grid gutter="3">
-                                <Grid.Col span={10}>
-                                    <TextInput
-                                        radius="md"
-                                        withAsterisk
-                                        placeholder="step.."
-                                        value={step.value}
-                                        onChange={(event) => handleStepChange(index, event)}
-                                    />
-                                </Grid.Col>
-                                <Grid.Col span={2}>
-                                    <Button onClick={() => handleDeleteStep(index)} variant="subtle" color="red">
-                                        <FiXCircle style={{ fontSize: '20px' }} />
-                                    </Button>
-                                </Grid.Col>
-                            </Grid>
-                        </div>
-                    ))}
-                    <Button onClick={handleAddStep} variant="outline">
-                        Add Step
-                    </Button>
-                </Stack>
-
-                <Textarea
-                    radius="md"
-                    placeholder="describe the cooking method..."
-                    label="Recipe Description"
-                    autosize
-                    minRows={4}
-                    withAsterisk
-                    {...form.getInputProps('description')}
-                />
-            </Fieldset>
-
-            <Fieldset legend="Recipe Details">
-                <Group>
-                    <Grid>
-                        <Grid.Col span={4}>
-                            <NumberInput
+            {isLoading ? (<LoadingOverlay
+                visible={true}
+                zIndex={1000}
+                overlayProps={{ radius: 'sm', blur: 2 }}
+                loaderProps={{ color: 'green', type: 'bars' }}
+            />) :
+                (
+                    <>
+                        <Fieldset legend="Recipe Cover">
+                            <TextInput
                                 radius="md"
+                                label="Recipe Title"
                                 withAsterisk
-                                label="Cook Time"
-                                placeholder="e.g. 1"
-                                onChange={(value: any) => cookTime(value)}
+                                placeholder="enter recipe name"
+                                {...form.getInputProps('title')}
                             />
-                        </Grid.Col>
-                        <Grid.Col span={8}>
-                            <Select
+                            <FileInput
+                                p={10}
+                                withAsterisk
+                                variant="filled"
+                                label="Recipe Image"
+                                placeholder="enter valid image"
+                                accept=".png,.jpeg,.jpg"
+                                onChange={(file: File | null) => {
+                                    if (file) {
+                                        // Check if the file type is PNG or JPEG
+                                        if (file.type === 'image/png' || file.type === 'image/jpeg') {
+                                            const fileURL = URL.createObjectURL(file);
+                                            form.setFieldValue('image', fileURL);
+                                        } else {
+                                            // Notify the user about the invalid file type
+                                            alert('Please upload only PNG or JPEG files.');
+                                        }
+                                    }
+                                }}
+                            />
+                        </Fieldset>
+
+                        <Fieldset legend="Recipe Ingredients">
+                            <Stack m={10} align="stretch" justify="center" gap="md">
+                                {ingredients.map((ingredient, index) => (
+                                    <div key={index}>
+                                        <Text>{`Ingredient ${index + 1}`}</Text>
+                                        <Grid gutter="3">
+                                            <Grid.Col span={10}>
+                                                <TextInput
+                                                    withAsterisk
+                                                    radius="md"
+                                                    placeholder="e.g. 2 tbs Sugar"
+                                                    value={ingredient.value}
+                                                    onChange={(event) => handleIngredientChange(index, event)}
+                                                />
+                                            </Grid.Col>
+                                            <Grid.Col span={2}>
+                                                <Button onClick={() => handleDeleteIngredient(index)} variant="subtle" color="red">
+                                                    <FiXCircle style={{ fontSize: '20px' }} />
+                                                </Button>
+                                            </Grid.Col>
+                                        </Grid>
+                                    </div>
+                                ))}
+                                <Button onClick={handleAddIngredient} variant="outline">
+                                    Add Ingredient
+                                </Button>
+                            </Stack>
+                        </Fieldset>
+
+                        <Fieldset legend="Cooking Method">
+                            <Stack m={10} align="stretch" justify="center" gap="md">
+                                {steps.map((step, index) => (
+                                    <div key={index}>
+                                        <Text>{`Step ${index + 1}`}</Text>
+                                        <Grid gutter="3">
+                                            <Grid.Col span={10}>
+                                                <TextInput
+                                                    radius="md"
+                                                    withAsterisk
+                                                    placeholder="step.."
+                                                    value={step.value}
+                                                    onChange={(event) => handleStepChange(index, event)}
+                                                />
+                                            </Grid.Col>
+                                            <Grid.Col span={2}>
+                                                <Button onClick={() => handleDeleteStep(index)} variant="subtle" color="red">
+                                                    <FiXCircle style={{ fontSize: '20px' }} />
+                                                </Button>
+                                            </Grid.Col>
+                                        </Grid>
+                                    </div>
+                                ))}
+                                <Button onClick={handleAddStep} variant="outline">
+                                    Add Step
+                                </Button>
+                            </Stack>
+
+                            <Textarea
                                 radius="md"
-                                label="Time Unit"
+                                placeholder="describe the cooking method..."
+                                label="Recipe Description"
+                                autosize
+                                minRows={4}
                                 withAsterisk
-                                placeholder="enter time unit"
-                                data={['Minutes', 'Hours', 'Days', 'Weeks']}
-                                onChange={(event) => cookTimeUnit(event)}
+                                {...form.getInputProps('description')}
                             />
-                        </Grid.Col>
-                        <Grid.Col span={4}>
-                            <NumberInput
-                                radius="md"
-                                withAsterisk
-                                label="Prep Time"
-                                placeholder="e.g. 3"
-                                onChange={(value: any) => prepTime(value)}
-                            />
-                        </Grid.Col>
-                        <Grid.Col span={8}>
-                            <Select
-                                radius="md"
-                                withAsterisk
-                                label="Time Unit"
-                                placeholder="enter time unit"
-                                data={['Minutes', 'Hours', 'Days', 'Weeks']}
-                                onChange={(event) => prepTimeUnit(event)}
-                            />
-                        </Grid.Col>
-                        <br />
-                        <Grid.Col span={4}>
+                        </Fieldset>
+
+                        <Fieldset legend="Recipe Details">
                             <Group>
-                                <Text>Servings: </Text>
+                                <Grid>
+                                    <Grid.Col span={4}>
+                                        <NumberInput
+                                            radius="md"
+                                            withAsterisk
+                                            label="Cook Time"
+                                            placeholder="e.g. 1"
+                                            onChange={(value: any) => cookTime(value)}
+                                        />
+                                    </Grid.Col>
+                                    <Grid.Col span={8}>
+                                        <Select
+                                            radius="md"
+                                            label="Time Unit"
+                                            withAsterisk
+                                            placeholder="enter time unit"
+                                            data={['Minutes', 'Hours', 'Days', 'Weeks']}
+                                            onChange={(event) => cookTimeUnit(event)}
+                                        />
+                                    </Grid.Col>
+                                    <Grid.Col span={4}>
+                                        <NumberInput
+                                            radius="md"
+                                            withAsterisk
+                                            label="Prep Time"
+                                            placeholder="e.g. 3"
+                                            onChange={(value: any) => prepTime(value)}
+                                        />
+                                    </Grid.Col>
+                                    <Grid.Col span={8}>
+                                        <Select
+                                            radius="md"
+                                            withAsterisk
+                                            label="Time Unit"
+                                            placeholder="enter time unit"
+                                            data={['Minutes', 'Hours', 'Days', 'Weeks']}
+                                            onChange={(event) => prepTimeUnit(event)}
+                                        />
+                                    </Grid.Col>
+                                    <br />
+                                    <Grid.Col span={4}>
+                                        <Group>
+                                            <Text>Servings: </Text>
+                                        </Group>
+                                    </Grid.Col>
+                                    <Grid.Col span={8}>
+                                        <NumberInput
+                                            radius="md"
+                                            placeholder="serving count"
+                                            {...form.getInputProps('servings')}
+                                        />
+                                    </Grid.Col>
+                                </Grid>
                             </Group>
-                        </Grid.Col>
-                        <Grid.Col span={8}>
-                            <NumberInput
+                        </Fieldset>
+
+                        <Fieldset legend="Recipe Origin">
+                            <Select
+                                m={5}
                                 radius="md"
-                                placeholder="serving count"
-                                {...form.getInputProps('servings')}
+                                withAsterisk
+                                label="Cuisine"
+                                data={cuisines}
+                                placeholder="cuisine type"
+                                searchable
+                                {...form.getInputProps('cuisine')}
                             />
-                        </Grid.Col>
-                    </Grid>
-                </Group>
-            </Fieldset>
+                            <Select
+                                m={5}
+                                radius="md"
+                                label="Dish Type"
+                                withAsterisk
+                                placeholder="what type of dish?"
+                                data={dishTypes}
+                                {...form.getInputProps('dishType')}
+                            />
+                        </Fieldset>
 
-            <Fieldset legend="Recipe Origin">
-                <Select
-                    m={5}
-                    radius="md"
-                    withAsterisk
-                    label="Cuisine"
-                    data={cuisines}
-                    placeholder="cuisine type"
-                    searchable
-                    {...form.getInputProps('cuisine')}
-                />
-                <Select
-                    m={5}
-                    radius="md"
-                    label="Dish Type"
-                    withAsterisk
-                    placeholder="what type of dish?"
-                    data={dishTypes}
-                    {...form.getInputProps('dishType')}
-                />
-            </Fieldset>
+                        <SegmentedControl
+                            m={10}
+                            radius="md"
+                            fullWidth
+                            data={['Public', 'Private', 'Unlisted']}
+                            {...form.getInputProps('visibility')}
+                        />
 
-            <SegmentedControl
-                m={10}
-                radius="md"
-                fullWidth
-                data={['Public', 'Private', 'Unlisted']}
-                {...form.getInputProps('visibility')}
-            />
-
-            <Group justify="center" mt="md">
-                <Button onClick={() => submit(form.values)}>Post it!</Button>
-            </Group>
+                        <Group justify="center" mt="md">
+                            <Button onClick={() => submit(form.values)}>Post it!</Button>
+                        </Group>
+                    </>
+                )}
         </>
     );
 }

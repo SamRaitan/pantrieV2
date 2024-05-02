@@ -11,32 +11,32 @@ const jwt = require('jsonwebtoken');
 // Create a recipe
 router.post('/create', isLoggedIn, upload.single('image'), async (req, res) => {
   try {
-    const { title, ingredient, steps, description, prepNumber, prepTime, cookNumber, cookTime, servings, type, cuisine, visibility } = req.body;
-    const image = req.file;
+    const { title, ingredients, steps, description, image, prepTime, cookTime, servings, dishType, cuisine, visibility } = req.body;
+    const image2 = req.file;
 
     // Get user information
     const token = req.cookies.jwt;
-    const decodedToken = jwt.verify(token, 'this is the secret hash code');
+    const decodedToken = jwt.verify(token, process.env.COOKIE_SALT);
     const user = await User.findById(decodedToken.id);
 
     // Upload image to cloudinary
-    const result = await cloudinary.uploader.upload(req.file.path);
-    const cookingTime = `${cookNumber} ${cookTime}`;
-    const prepingTime = `${prepNumber} ${prepTime}`;
+    // const result = await cloudinary.uploader.upload(req.file.path);
+    // const cookingTime = `${cookTime}`;
+    // const prepingTime = `${prepTime}`;
 
     // Create recipe
     const post = new Recipe({
-      uploader: user.username,
+      uploader: user._id,
       title,
-      image: result.secure_url,
-      cloudinary_id: result.public_id,
-      ingredients: ingredient,
+      image,
+      cloudinary_id: 'null',
+      ingredients,
       steps,
       description,
-      prepTime: prepingTime,
-      cookTime: cookingTime,
+      prepTime,
+      cookTime,
       servings,
-      foodType: type,
+      dishType,
       cuisine,
       visibility
     });
@@ -46,7 +46,7 @@ router.post('/create', isLoggedIn, upload.single('image'), async (req, res) => {
 
     // Save recipe
     await post.save();
-    res.json({ 'data': 'recipe saved' });
+    res.json({ 'data': 'success' });
   } catch (err) {
     res.status(500).json({ 'error': err.message });
   }

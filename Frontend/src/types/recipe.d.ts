@@ -34,6 +34,11 @@ type createPost = {
     visibility: string;
 }
 
+type createPostError = {
+    data: string;
+    status: number;
+}
+
 type createResponse = {
     data: string;
 }

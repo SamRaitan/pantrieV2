@@ -43,10 +43,7 @@ function SignUpForm(props: StepperProps) {
     const submit = async (userData: SignUpRequest) => {
         try {
             // Call the signup mutation hook with the user data
-            const response = await signup(userData);
-
-            // Handle success
-            console.log('Signup successful!', response);
+            await signup(userData);
         } catch (err) {
             // Handle error
             console.error('Signup failed:', err);
