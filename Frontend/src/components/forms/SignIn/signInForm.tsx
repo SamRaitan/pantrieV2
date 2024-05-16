@@ -41,7 +41,7 @@ function SignInForm() {
                 setNotification(false)
                 const user = response.data;
                 dispatch(setUser(user));
-                // window.location.href = '/';
+                window.location.href = '/';
             }
 
         } catch (err: any) {

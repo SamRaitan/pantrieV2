@@ -38,7 +38,11 @@ function SignIn() {
                 height: '100vh',
             }}
         >
-            <Modal opened={opened} onClose={open} title="Authentication" withCloseButton={false} centered>
+            <Modal opened={opened} onClose={open} title="Authentication" withCloseButton={false} centered overlayProps={{
+                backgroundOpacity: 0.55,
+                blur: 3,
+                mt: 50
+            }}>
                 <SignInForm />
                 <p className="login-text">Don't have a account yet?
                     <span className="logIn">
