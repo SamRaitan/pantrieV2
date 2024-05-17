@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import SignUp from '../screens/signup/index';
 import SignIn from '../screens/signin/index';
 import NavBar from '../components/shared/navbar';
+import Home from '../screens/home';
 import Create from '../screens/create/index';
 import ProtectedRoute from './protectedRoute';
 
@@ -13,7 +14,7 @@ const AppRouter = () => {
                 <div className="content">
                     <Switch>
                         <Route exact path="/">
-                            <SignUp />
+                            <Home />
                         </Route>
                         <Route exact path="/signup">
                             <SignUp />
