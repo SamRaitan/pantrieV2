@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, TextInput, FileInput, Grid, Text, Fieldset, Stack, Textarea, NumberInput, Group, SegmentedControl, Select, LoadingOverlay } from '@mantine/core';
 import { useForm, yupResolver } from '@mantine/form';
-import { notifications } from '@mantine/notifications';
 import { FiXCircle } from "react-icons/fi";
-import { IoIosCloseCircleOutline } from "react-icons/io";
 import { cuisines } from '../../../utils/cuisines';
 import { dishTypes } from '../../../utils/dishType';
 import { createPost } from '../../../types/recipe';
@@ -128,6 +126,7 @@ function CreateForm() {
                 if ((response as createPostError).error.status === 401) {
                     dispatch(clearUser());
                     window.location.href = '/signin';
+                    console.log(response);
                 }
             } else {
                 window.location.href = '/';

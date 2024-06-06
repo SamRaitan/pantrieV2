@@ -9,7 +9,7 @@ router.get('/signin', (req, res) => {
 });
 
 router.get('/logout', (req, res) => {
-  res.cookie('WEB_TOKEN', '', { maxAge: 1 })
+  res.cookie('jwt', '', { maxAge: 1 })
   res.status(200).redirect('/');
 })
 
@@ -24,7 +24,7 @@ router.post('/signin', async (req, res) => {
   const { cookie, token, user } = result;
 
   res.cookie('STAGE', cookie, { maxAge: maxAge * 1000 })
-  res.cookie('WEB_TOKEN', token, { httpOnly: true, maxAge: maxAge * 1000 });
+  res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
   res.status(200).json({ cookie, user });
 });
 

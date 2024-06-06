@@ -46,14 +46,14 @@ router.post('/create', isLoggedIn, upload.single('image'), async (req, res) => {
 
     // Save recipe
     await post.save();
-    res.json({ 'data': 'success' });
+    res.status(200).json({ 'data': 'success' });
   } catch (err) {
     res.status(500).json({ 'error': err.message });
   }
 });
 
 // Get all posts
-router.get('/post', async (req, res) => {
+router.get('/posts', async (req, res) => {
   try {
     const result = await Recipe.find().sort({ createdAt: -1 });
     res.json({ 'data': result });

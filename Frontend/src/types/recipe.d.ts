@@ -20,6 +20,10 @@ type Recipe = {
     updatedAt: Date;
 }
 
+type GetRecipes = {
+    data: Recipe[]
+}
+
 type createPost = {
     title: string;
     image: any;

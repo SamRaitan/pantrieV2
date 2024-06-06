@@ -8,13 +8,13 @@ import { baseApi } from '../selectors';
 const rootReducer = combineReducers({
     [baseApi.reducerPath]: baseApi.reducer,
     auth: authReducer,
-    // Add other reducers here if any
 });
 
-// Define persist config
+
 const persistConfig = {
     key: 'root',
-    storage: storage, // Default storage (localStorage)
+    storage: storage,
+    blacklist: [baseApi.reducerPath],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

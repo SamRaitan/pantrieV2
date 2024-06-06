@@ -44,7 +44,7 @@ app.delete('*', userInfo)
 
 app.put('*', userInfo)
 
-// app.get('/', async (req, res) => {
+// app.get('/recipes', async (req, res) => {
 //   res.redirect('/post');
 // });
 
@@ -75,17 +75,4 @@ app.use(Recipes)
 // app.use((req, res) => {
 //   res.status(404).render('404', { title: '404' });
 // });
-
-
-
-
-
-
-
-
-
-
-
-
-
 

@@ -1,28 +1,30 @@
 import { Card, Image, Text, Group } from '@mantine/core';
+import { Recipe } from '../../types/recipe';
 
 // Define the Props type correctly
 type Props = {
-    width: number; // Use lowercase 'number' for the type
+    width: number;
+    recipe: Recipe;
 };
 
-function MainCard({ width }: Props) {
+function MainCard({ width, recipe }: Props) {
+
     return (
         <Card shadow="sm" padding="lg" radius="md" withBorder w={width}>
-            <Card.Section component="a" href="https://mantine.dev/">
+            <Card.Section component="a" href="/create-recipe-post">
                 <Image
-                    src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-8.png"
+                    src={recipe.image}
                     height={160}
-                    alt="Norway"
+                    alt="recipe image"
                 />
             </Card.Section>
 
             <Group justify="space-between" mt="md" mb="xs">
-                <Text fw={500}>Norway Fjord Adventures</Text>
+                <Text fw={500}>{recipe.title}</Text>
             </Group>
 
             <Text size="sm" c="dimmed">
-                With Fjord Tours you can explore more of the magical fjord landscapes with tours and
-                activities on and around the fjords of Norway
+                {recipe.description}
             </Text>
         </Card>
     );

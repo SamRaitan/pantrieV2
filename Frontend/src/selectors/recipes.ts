@@ -1,15 +1,8 @@
 import { baseApi } from '.';
-import { createPost, createResponse } from '../types/recipe';
+import { createPost, createResponse, GetRecipes } from '../types/recipe';
 
 export const recipeApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
-        getRecipes: build.query<SignInResponse, SignInRequestBody>({
-            query: (userData) => ({
-                url: 'recipes',
-                method: 'GET',
-                body: userData,
-            }),
-        }),
         postRecipes: build.mutation<createResponse, createPost>({
             query: (userData) => ({
                 url: 'api/create',
@@ -17,11 +10,16 @@ export const recipeApi = baseApi.injectEndpoints({
                 body: userData,
             }),
         }),
+        fetchRecipes: build.query<GetRecipes, void>({
+            query: () => ({
+                url: 'api/posts',
+                method: 'GET',
+            }),
+        }),
     }),
 })
 
-
 export const {
     usePostRecipesMutation,
-    useGetRecipesQuery
+    useFetchRecipesQuery,
 } = recipeApi;
