@@ -20,7 +20,7 @@ router.post('/create', isLoggedIn, upload.single('image'), async (req, res) => {
     const user = await User.findById(decodedToken.id);
 
     // Upload image to cloudinary
-    // const result = await cloudinary.uploader.upload(req.file.path);
+    const result = await cloudinary.uploader.upload(image);
     // const cookingTime = `${cookTime}`;
     // const prepingTime = `${prepTime}`;
 
@@ -29,7 +29,7 @@ router.post('/create', isLoggedIn, upload.single('image'), async (req, res) => {
       uploader: user._id,
       title,
       image,
-      cloudinary_id: 'null',
+      cloudinary_id: result,
       ingredients,
       steps,
       description,

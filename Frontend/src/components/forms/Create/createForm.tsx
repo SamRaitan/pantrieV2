@@ -163,8 +163,7 @@ function CreateForm() {
                                     if (file) {
                                         // Check if the file type is PNG or JPEG
                                         if (file.type === 'image/png' || file.type === 'image/jpeg') {
-                                            const fileURL = URL.createObjectURL(file);
-                                            form.setFieldValue('image', fileURL);
+                                            form.setFieldValue('image', file);
                                         } else {
                                             // Notify the user about the invalid file type
                                             alert('Please upload only PNG or JPEG files.');
