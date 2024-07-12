@@ -16,6 +16,9 @@ const recipeSchema = new Schema({
   image: {
     type: String,
   },
+  cloudinary_image: {
+    type: String,
+  },
   cloudinary_id: {
     type: String,
   },

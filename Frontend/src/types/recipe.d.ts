@@ -7,6 +7,7 @@ type Recipe = {
     image?: string | null;
     ingredients: string[];
     steps: string[];
+    cloudinary_image: string;
     description: string;
     prepTime: string;
     cookTime: string;

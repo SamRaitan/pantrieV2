@@ -119,20 +119,37 @@ function CreateForm() {
 
     const submit = async (data: any) => {
         if (form.validate().hasErrors) {
-            return form.values
+            return form.values;
         } else {
-            const response = await createRecipe(data)
-            if ('error' in response) {
-                if ((response as createPostError).error.status === 401) {
-                    dispatch(clearUser());
-                    window.location.href = '/signin';
-                    console.log(response);
+            const formData = new FormData();
+            formData.append('title', data.title);
+            formData.append('image', data.image);
+            formData.append('ingredients', JSON.stringify(data.ingredients));
+            formData.append('steps', JSON.stringify(data.steps));
+            formData.append('description', data.description);
+            formData.append('cookTime', data.cookTime);
+            formData.append('prepTime', data.prepTime);
+            formData.append('servings', data.servings);
+            formData.append('cuisine', data.cuisine);
+            formData.append('dishType', data.dishType);
+            formData.append('visibility', data.visibility);
+
+            try {
+                const response = await createRecipe(formData as any);
+                if ('error' in response) {
+                    if ((response as createPostError).error.status === 401) {
+                        dispatch(clearUser());
+                        window.location.href = '/signin';
+                        console.log(response);
+                    }
+                } else {
+                    window.location.href = '/';
                 }
-            } else {
-                window.location.href = '/';
+            } catch (error) {
+                console.error('Error creating recipe:', error);
             }
         }
-    }
+    };
 
     return (
         <>
@@ -161,11 +178,9 @@ function CreateForm() {
                                 accept=".png,.jpeg,.jpg"
                                 onChange={(file: File | null) => {
                                     if (file) {
-                                        // Check if the file type is PNG or JPEG
                                         if (file.type === 'image/png' || file.type === 'image/jpeg') {
                                             form.setFieldValue('image', file);
                                         } else {
-                                            // Notify the user about the invalid file type
                                             alert('Please upload only PNG or JPEG files.');
                                         }
                                     }

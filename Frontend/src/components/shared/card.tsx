@@ -13,7 +13,7 @@ function MainCard({ width, recipe }: Props) {
         <Card shadow="sm" padding="lg" radius="md" withBorder w={width}>
             <Card.Section component="a" href="/create-recipe-post">
                 <Image
-                    src={recipe.image}
+                    src={recipe.cloudinary_image}
                     height={160}
                     alt="recipe image"
                 />
