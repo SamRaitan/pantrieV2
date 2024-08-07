@@ -12,7 +12,7 @@ router.get('/profile/:url', (req, res) => {
 
     //checking the cookie to see the user id of signed in user
     const token = req.cookies.jwt;
-    jwt.verify(token, 'this is the secret hash code', async (err, decodedToken) => {
+    jwt.verify(token, process.env.COOKIE_SALT, async (err, decodedToken) => {
         let user = await User.findById(decodedToken.id)
         // checking for all users posts 
         if (user) {

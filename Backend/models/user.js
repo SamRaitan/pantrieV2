@@ -87,12 +87,12 @@ const userSchema = new Schema({
 // });
 
 // this saves the user with @ 
-// userSchema.pre('save', function (next) {
-//   if (this.username.charAt(0) != '@') {
-//     this.username = `@${this.username}`;
-//   }
-//   next();
-// });
+userSchema.pre('save', function (next) {
+  if (this.username.charAt(0) != '@') {
+    this.username = `@${this.username}`;
+  }
+  next();
+});
 
 const User = mongoose.model('user', userSchema);
 module.exports = User;

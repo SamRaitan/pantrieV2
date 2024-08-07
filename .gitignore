@@ -31,3 +31,5 @@ Frontend/*.cjs
 Frontend/*.config*
 Frontend/*.node*
 Frontend/*.json
+
+node_modules/

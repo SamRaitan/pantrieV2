@@ -2,7 +2,8 @@ import { User } from './user';
 
 type Recipe = {
     _id: string;
-    uploader: string;
+    uploader_id: string;
+    uploader_un: string;
     title: string;
     image?: string | null;
     ingredients: string[];

@@ -5,6 +5,8 @@ import NavBar from '../components/shared/navbar';
 import Home from '../screens/home';
 import Create from '../screens/create/index';
 import ProtectedRoute from './protectedRoute';
+import RecipeDetail from '../screens/recipeDetails';
+import VisitedProfile from '../screens/profiles/visitedProfile';
 
 const AppRouter = () => {
     return (
@@ -21,6 +23,12 @@ const AppRouter = () => {
                         </Route>
                         <Route exact path="/signin">
                             <SignIn />
+                        </Route>
+                        <Route exact path="/posts/:id">
+                            <RecipeDetail />
+                        </Route>
+                        <Route exact path="/userProfile/:username">
+                            <VisitedProfile />
                         </Route>
                         <ProtectedRoute exact path="/create-recipe-post" component={Create} />
                     </Switch>

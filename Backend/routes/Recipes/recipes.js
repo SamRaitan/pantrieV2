@@ -26,7 +26,8 @@ router.post('/create', isLoggedIn, upload.single('image'), async (req, res) => {
 
     // Create recipe
     const post = new Recipe({
-      uploader: user._id,
+      uploader_id: user._id,
+      uploader_un: user.username,
       title,
       image,
       cloudinary_image: result.secure_url,
@@ -70,8 +71,10 @@ router.get('/posts/:id', async (req, res) => {
     const result = await Recipe.findById(id);
     const userResult = await User.findOne({ username: result.uploader });
     res.json({ 'data': { 'post': result, 'visitedUser': userResult } });
+    console.log('ff');
   } catch (err) {
     res.status(500).json({ 'error': err.message });
+    console.log(err);
   }
 });
 

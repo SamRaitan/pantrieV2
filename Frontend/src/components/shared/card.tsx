@@ -1,4 +1,4 @@
-import { Card, Image, Text, Group } from '@mantine/core';
+import { Card, Image, Text, Group, Anchor } from '@mantine/core';
 import { Recipe } from '../../types/recipe';
 
 // Define the Props type correctly
@@ -11,13 +11,19 @@ function MainCard({ width, recipe }: Props) {
 
     return (
         <Card shadow="sm" padding="lg" radius="md" withBorder w={width}>
-            <Card.Section component="a" href="/create-recipe-post">
+            <Card.Section component="a" href={`posts/${recipe._id}`}>
                 <Image
                     src={recipe.cloudinary_image}
                     height={160}
                     alt="recipe image"
                 />
             </Card.Section>
+
+            <Anchor href={`userProfile/${recipe.uploader_un}`} size='sm' c='black' target="_blank" underline="never">
+                {recipe.uploader_un}
+            </Anchor>
+
+
 
             <Group justify="space-between" mt="md" mb="xs">
                 <Text fw={500}>{recipe.title}</Text>

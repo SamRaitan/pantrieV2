@@ -5,7 +5,11 @@ const foodTypes = require('../utils/foodType')
 
 const recipeSchema = new Schema({
 
-  uploader: {
+  uploader_id: {
+    type: String,
+    require: true,
+  },
+  uploader_un: {
     type: String,
     require: true,
   },
