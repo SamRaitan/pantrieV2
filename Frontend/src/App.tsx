@@ -3,6 +3,7 @@ import AppRouter from "./router"
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "./slice/authSlice";
 import { RootState } from "./store/store";
+import { AppShell, AppShellFooter } from "@mantine/core";
 
 function App() {
   const dispatch = useDispatch();
@@ -21,7 +22,11 @@ function App() {
   }, []);
 
   return (
-    <AppRouter />
+    <AppShell>
+      <AppShell.Main>
+        <AppRouter />
+      </AppShell.Main>
+    </AppShell>
   )
 }
 

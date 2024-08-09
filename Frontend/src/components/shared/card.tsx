@@ -1,7 +1,6 @@
 import { Card, Image, Text, Group, Anchor } from '@mantine/core';
 import { Recipe } from '../../types/recipe';
 
-// Define the Props type correctly
 type Props = {
     width: number;
     recipe: Recipe;

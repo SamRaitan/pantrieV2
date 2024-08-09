@@ -1,12 +1,10 @@
-import { Center, Container, Group, SimpleGrid, Text } from '@mantine/core';
-import { useMediaQuery } from '@mantine/hooks';
-import MainCard from '../../components/shared/card';
+import { Container, Group, Text } from '@mantine/core';
 import FoodCuisines from '../../components/foodTypeCarusel';
 import { useFetchRecipesQuery } from '../../selectors/recipes';
+import CardLayout from '../../components/shared/cardLayout';
 
 function Home() {
     const { data: recipes, isLoading, isError } = useFetchRecipesQuery();
-    const isPhoneOrSmaller = useMediaQuery('(max-width: 820px)'); // Adjust the width according to your breakpoint
 
     return (
         <>
@@ -15,28 +13,7 @@ function Home() {
                 <Group justify="center">
                     <FoodCuisines />
                 </Group>
-                <Text fw={800} m={10} p={10}>For You</Text>
-                <Group justify="center" m={10}>
-                    {isLoading && <Text>Loading...</Text>}
-                    {isError && <Text>Error loading recipes</Text>}
-                    {recipes && (
-                        isPhoneOrSmaller ? (
-                            <Center>
-                                <SimpleGrid cols={{ base: 2, xs: 3, sm: 3, md: 3, lg: 4, xl: 4 }}>
-                                    {recipes.data.map((recipe) => (
-                                        <MainCard recipe={recipe} width={170} />
-                                    ))}
-                                </SimpleGrid>
-                            </Center>
-                        ) : (
-                            <SimpleGrid cols={{ base: 2, xs: 3, sm: 3, md: 3, lg: 4, xl: 4 }}>
-                                {recipes.data.map((recipe) => (
-                                    <MainCard recipe={recipe} width={260} />
-                                ))}
-                            </SimpleGrid>
-                        )
-                    )}
-                </Group>
+                <CardLayout isLoading={isLoading} isError={isError} recipes={recipes} title='For You' />
             </Container>
         </>
     );
