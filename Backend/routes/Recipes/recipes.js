@@ -14,6 +14,12 @@ router.post('/create', isLoggedIn, upload.single('image'), async (req, res) => {
     const { title, ingredients, steps, description, image, prepTime, cookTime, servings, dishType, cuisine, visibility } = req.body;
     const image2 = req.file;
 
+    // Parse ingredients and steps back into arrays
+    const parsedIngredients = JSON.parse(ingredients);
+    const parsedSteps = JSON.parse(steps);
+
+    console.log(parsedIngredients);
+
     // Get user information
     const token = req.cookies.jwt;
     const decodedToken = jwt.verify(token, process.env.COOKIE_SALT);
@@ -21,8 +27,6 @@ router.post('/create', isLoggedIn, upload.single('image'), async (req, res) => {
 
     // Upload image to cloudinary
     const result = await cloudinary.uploader.upload(req.file.path);
-    // const cookingTime = `${cookTime}`;
-    // const prepingTime = `${prepTime}`;
 
     // Create recipe
     const post = new Recipe({
@@ -32,8 +36,8 @@ router.post('/create', isLoggedIn, upload.single('image'), async (req, res) => {
       image,
       cloudinary_image: result.secure_url,
       cloudinary_id: result.public_id,
-      ingredients,
-      steps,
+      ingredients: parsedIngredients,
+      steps: parsedSteps,
       description,
       prepTime,
       cookTime,
@@ -42,6 +46,8 @@ router.post('/create', isLoggedIn, upload.single('image'), async (req, res) => {
       cuisine,
       visibility
     });
+
+    console.log(post);
 
     // Increment user's postsCount
     await User.findByIdAndUpdate(user._id, { $inc: { postsCount: 1 } });
@@ -70,8 +76,7 @@ router.get('/posts/:id', async (req, res) => {
     const id = req.params.id;
     const result = await Recipe.findById(id);
     const userResult = await User.findOne({ username: result.uploader });
-    res.json({ 'data': { 'post': result, 'visitedUser': userResult } });
-    console.log('ff');
+    res.json({ 'data': result });
   } catch (err) {
     res.status(500).json({ 'error': err.message });
     console.log(err);

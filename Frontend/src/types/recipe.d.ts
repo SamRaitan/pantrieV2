@@ -26,6 +26,10 @@ type GetRecipes = {
     data: Recipe[]
 }
 
+type GetRecipe = {
+    data: Recipe
+}
+
 type createPost = {
     title: string;
     image: any;

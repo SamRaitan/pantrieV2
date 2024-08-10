@@ -1,5 +1,5 @@
 import { baseApi } from '.';
-import { createPost, createResponse, GetRecipes } from '../types/recipe';
+import { createPost, createResponse, GetRecipe, GetRecipes } from '../types/recipe';
 
 export const recipeApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
@@ -16,10 +16,18 @@ export const recipeApi = baseApi.injectEndpoints({
                 method: 'GET',
             }),
         }),
+        fetchRecipe: build.query<GetRecipe, string>({
+            query: (id) => ({
+                url: `api/posts/${id}`,
+                method: 'GET',
+            }),
+        }),
     }),
 })
 
 export const {
     usePostRecipesMutation,
     useFetchRecipesQuery,
+    useFetchRecipeQuery,
+
 } = recipeApi;

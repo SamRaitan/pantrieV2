@@ -31,8 +31,8 @@ function CreateForm() {
         initialValues: {
             title: '',
             image: '',
-            ingredients: ingredients.map(ingredient => ingredient.value), // Map ingredients to values
-            steps: steps.map(step => step.value), // Map steps to values
+            ingredients: [], // Map ingredients to values
+            steps: [], // Map steps to values
             description: '',
             cookTime: '',
             prepTime: '',
@@ -124,8 +124,14 @@ function CreateForm() {
             const formData = new FormData();
             formData.append('title', data.title);
             formData.append('image', data.image);
-            formData.append('ingredients', JSON.stringify(data.ingredients));
-            formData.append('steps', JSON.stringify(data.steps));
+
+            // If ingredients are already an array of strings, there's no need to stringify them
+            const ingredientsArray = data.ingredients;
+            formData.append('ingredients', JSON.stringify(ingredientsArray));
+
+            const stepsArray = data.steps;
+            formData.append('steps', JSON.stringify(stepsArray));
+
             formData.append('description', data.description);
             formData.append('cookTime', data.cookTime);
             formData.append('prepTime', data.prepTime);
@@ -135,6 +141,7 @@ function CreateForm() {
             formData.append('visibility', data.visibility);
 
             try {
+                console.log(formData);
                 const response = await createRecipe(formData as any);
                 if ('error' in response) {
                     if ((response as createPostError).error.status === 401) {
@@ -143,7 +150,7 @@ function CreateForm() {
                         console.log(response);
                     }
                 } else {
-                    window.location.href = '/';
+
                 }
             } catch (error) {
                 console.error('Error creating recipe:', error);
