@@ -115,11 +115,16 @@ router.post('/posts/:postId/like', async (req, res) => {
 
 // Unlike a post
 router.post('/posts/:postId/unlike', async (req, res) => {
+
   try {
     const { postId } = req.params;
     const { userId } = req.body;
-    await Recipe.findByIdAndUpdate(postId, { $pull: { likes: userId }, $inc: { likesCount: -1 } });
-    await User.findByIdAndUpdate(userId, { $pull: { likedPosts: postId } });
+    const post = await Recipe.findById(postId);
+
+    if (post.likes.includes(userId)) {
+      await Recipe.findByIdAndUpdate(postId, { $pull: { likes: userId }, $inc: { likesCount: -1 } });
+      await User.findByIdAndUpdate(userId, { $pull: { likedPosts: postId } });
+    }
     res.json({ 'data': 'unliked' });
   } catch (err) {
     res.status(500).json({ 'error': err.message });

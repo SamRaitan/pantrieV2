@@ -1,7 +1,12 @@
 // authSlice.js - Redux slice for authentication
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+type AuthState = {
+    user: null | User,
+    isAuthenticated: boolean,
+    token: null | string,
+}
 
-const initialState = {
+const initialState: AuthState = {
     user: null,
     isAuthenticated: false,
     token: null,
@@ -11,7 +16,7 @@ const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        setUser: (state, action) => {
+        setUser: (state, action: PayloadAction<{ user: User; cookie: string }>) => {
             state.user = action.payload.user;
             state.token = action.payload.cookie; // Set the token upon user login
             state.isAuthenticated = true;

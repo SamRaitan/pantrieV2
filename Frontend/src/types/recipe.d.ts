@@ -22,6 +22,10 @@ type Recipe = {
     updatedAt: Date;
 }
 
+type LikeResponse = {
+    data: string;
+}
+
 type GetRecipes = {
     data: Recipe[]
 }

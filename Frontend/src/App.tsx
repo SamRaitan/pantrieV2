@@ -23,7 +23,7 @@ function App() {
 
   return (
     <AppShell>
-      <AppShell.Main>
+      <AppShell.Main mb={25}>
         <AppRouter />
       </AppShell.Main>
     </AppShell>

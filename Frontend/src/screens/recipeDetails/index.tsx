@@ -1,10 +1,12 @@
 import { useParams } from 'react-router-dom';
-import { useFetchRecipeQuery } from '../../selectors/recipes';
+import { useFetchRecipeQuery, useLikeARecipeMutation } from '../../selectors/recipes';
 import { AspectRatio, Badge, Checkbox, Divider, Grid, List, Paper, Spoiler, Stack, Text, Image, Center, Container, Group, Button } from '@mantine/core';
 import { useState } from 'react';
 import { AiOutlineLike } from "react-icons/ai";
 import { BiLike } from "react-icons/bi";
 import { BiSolidLike } from "react-icons/bi";
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 
 
 
@@ -13,13 +15,23 @@ interface RouteParams {
 }
 
 function RecipeDetail() {
-    const { id } = useParams<RouteParams>(); // Explicitly type the useParams hook
+    const { id } = useParams<RouteParams>();
+    const user = useSelector((state: RootState) => state.auth.user);
     const { data: recipes, isLoading, isError } = useFetchRecipeQuery(id);
+    const [likeARecipe] = useLikeARecipeMutation();
 
     const [isClicked, setIsClicked] = useState(false);
 
-    const handleClick = () => {
-        setIsClicked((prevState) => !prevState);
+
+
+    const handleClick = async (action: string) => {
+        try {
+            const { data } = await likeARecipe({ postId: id, action, userId: user }).unwrap();
+            console.log(data);
+            setIsClicked((prevState) => !prevState);
+        } catch (error) {
+            console.error('Error liking/unliking the recipe:', error);
+        }
     };
 
     if (isLoading) return <p>Loading...</p>;
@@ -27,8 +39,8 @@ function RecipeDetail() {
 
     return (
         <Container>
-            <Group justify="center" m={30}>
-                <Text size='xl' fw={600}>
+            <Group justify="center" m={15}>
+                <Text tt="capitalize" size='xl' fw={600}>
                     {recipes?.data.title}
                 </Text>
             </Group>
@@ -40,7 +52,7 @@ function RecipeDetail() {
 
             <Divider my="md" />
 
-            <Group justify="space-between" m={5}>
+            <Group justify="space-between" m={5} mt={10}>
                 <Stack
                     align="flex-start"
                     justify="center"
@@ -49,9 +61,21 @@ function RecipeDetail() {
                     <Text fw={700}>{recipes?.data.uploader_un}</Text>
                     <Text c="dimmed" size="sm">Likes: {recipes?.data.likesCount}</Text>
                 </Stack>
-                <Button variant="transparent" color='teal' size="md" radius="md" onClick={handleClick}>
-                    {isClicked ? <BiSolidLike style={{ fontSize: '24px' }} /> : <BiLike style={{ fontSize: '24px' }} />}
-                </Button>
+                {user && (
+                    <Button
+                        variant="transparent"
+                        color="teal"
+                        size="md"
+                        radius="md"
+                        onClick={() => handleClick(recipes?.data.likes.includes(user._id) ? 'unlike' : 'like')}
+                    >
+                        {recipes?.data.likes.includes(user._id) ? (
+                            <BiSolidLike style={{ fontSize: '24px' }} />
+                        ) : (
+                            <BiLike style={{ fontSize: '24px' }} />
+                        )}
+                    </Button>
+                )}
             </Group>
 
             <Stack miw={50}>
