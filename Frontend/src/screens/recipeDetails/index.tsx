@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useFetchRecipeQuery, useLikeARecipeMutation } from '../../selectors/recipes';
-import { AspectRatio, Badge, Checkbox, Divider, Grid, List, Paper, Spoiler, Stack, Text, Image, Center, Container, Group, Button } from '@mantine/core';
+import { AspectRatio, Badge, Checkbox, Divider, Grid, List, Paper, Spoiler, Stack, Text, Image, Center, Container, Group, Button, Anchor } from '@mantine/core';
 import { useState } from 'react';
 import { AiOutlineLike } from "react-icons/ai";
 import { BiLike } from "react-icons/bi";
@@ -58,7 +58,9 @@ function RecipeDetail() {
                     justify="center"
                     gap={0}
                 >
-                    <Text fw={700}>{recipes?.data.uploader_un}</Text>
+                    <Anchor href={`/userProfile/${recipes?.data.uploader_un}`} fw={700} size='md' c='black' underline="never">
+                        {recipes?.data.uploader_un}
+                    </Anchor>
                     <Text c="dimmed" size="sm">Likes: {recipes?.data.likesCount}</Text>
                 </Stack>
                 {user && (
