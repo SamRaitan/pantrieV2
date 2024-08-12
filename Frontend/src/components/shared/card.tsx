@@ -10,7 +10,7 @@ function MainCard({ width, recipe }: Props) {
 
     return (
         <Card shadow="sm" padding="lg" radius="md" withBorder w={width}>
-            <Card.Section component="a" href={`posts/${recipe._id}`}>
+            <Card.Section component="a" href={`/posts/${recipe._id}`}>
                 <Image
                     src={recipe.cloudinary_image}
                     height={160}
@@ -18,7 +18,7 @@ function MainCard({ width, recipe }: Props) {
                 />
             </Card.Section>
 
-            <Anchor href={`userProfile/${recipe.uploader_un}`} size='sm' c='black' target="_blank" underline="never">
+            <Anchor href={`/userProfile/${recipe.uploader_un}`} size='sm' c='black' target="_blank" underline="never">
                 {recipe.uploader_un}
             </Anchor>
 

@@ -108,6 +108,7 @@ function RecipeDetail() {
                             </Grid>
                         </Paper>
                     </Grid.Col>
+                    <Text fw={700}>Description</Text>
                     <Grid.Col span={{ xs: 12, md: 6 }} m={7}>
                         <Spoiler maxHeight={120} showLabel="Show more" hideLabel="Hide">
                             {recipes?.data.description}
@@ -118,6 +119,7 @@ function RecipeDetail() {
                 <Divider my="md" />
 
                 <Grid>
+                    <Text fw={700}>Ingredients</Text>
                     <Grid.Col span={{ xs: 12, md: 4 }}>
                         {recipes?.data.ingredients.map((ingredient, index) => (
                             <Checkbox
@@ -130,6 +132,8 @@ function RecipeDetail() {
                             />
                         ))}
                     </Grid.Col>
+                    <Text mt={7} fw={700}>Cooking Steps</Text>
+
                     <Grid.Col span={{ xs: 12, md: 8 }}>
                         <List type="ordered">
                             {recipes?.data.steps.map((step, index) => (

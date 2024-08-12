@@ -31,7 +31,7 @@ function CardLayout({ isLoading, isError, recipes, title }: Props) {
                             </SimpleGrid>
                         </Center>
                     ) : (
-                        <SimpleGrid cols={{ base: 2, xs: 3, sm: 3, md: 3, lg: 4, xl: 4 }}>
+                        <SimpleGrid cols={{ base: 2, xs: 3, sm: 3, md: 3, lg: 3, xl: 3 }}>
                             {recipes.data.map((recipe: Recipe) => (
                                 <MainCard recipe={recipe} width={260} />
                             ))}
