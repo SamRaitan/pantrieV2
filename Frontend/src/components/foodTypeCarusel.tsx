@@ -12,7 +12,7 @@ function FoodCuisines() {
                 {cuisines.map((cuisine, index) => (
                     <Carousel.Slide key={index} mah={70}>
                         <Stack align="center" justify="center" gap="xs" mx={10} >
-                            <Avatar color="green" radius="xl">
+                            <Avatar color="teal" radius="xl">
                                 NN
                             </Avatar>
                             <Text>{cuisine}</Text>

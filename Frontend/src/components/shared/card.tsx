@@ -24,11 +24,11 @@ function MainCard({ width, recipe }: Props) {
 
 
 
-            <Group justify="space-between" mt="md" mb="xs">
-                <Text fw={500}>{recipe.title}</Text>
+            <Group mb="xs">
+                <Text lineClamp={1} fw={500}>{recipe.title}</Text>
             </Group>
 
-            <Text size="sm" c="dimmed">
+            <Text lineClamp={2} size="sm" c="dimmed">
                 {recipe.description}
             </Text>
         </Card>

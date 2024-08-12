@@ -2,7 +2,6 @@ import { Button, Container, Divider, Grid, Group, Stack, Text } from '@mantine/c
 import { useParams } from 'react-router-dom';
 import { useFetchUserProfileQuery } from '../../../selectors/profiles';
 import ResponsiveAvatar from './responsiveAvatar';
-import { RiUserFollowLine } from "react-icons/ri";
 import CardLayout from '../../../components/shared/cardLayout';
 
 
