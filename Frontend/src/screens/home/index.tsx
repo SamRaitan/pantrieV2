@@ -9,7 +9,7 @@ function Home() {
 
     return (
         <>
-            <Container size={'lg'}>
+            <Container >
                 <Text fw={800}>Cuisines</Text>
                 <Group justify="center">
                     <FoodCuisines />
