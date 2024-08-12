@@ -11,6 +11,8 @@ type User = {
     followers: string[]; // Assuming this is an array of user IDs
     followersCount: number;
     RecipeCount: number;
+    blockedUser: string[];
+    createdRecipes: string[];
     createdAt: Date;
     updatedAt: Date;
 }

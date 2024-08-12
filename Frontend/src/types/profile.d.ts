@@ -1,7 +1,7 @@
 import User from './user'
 
-type UserProfileRequestParams = {
-    url: string;
+type UserProfileRequest = {
+    username: string;
 };
 
 type UserProfileResponse = {

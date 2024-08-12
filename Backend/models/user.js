@@ -71,6 +71,14 @@ const userSchema = new Schema({
     type: Number,
     default: 0
   },
+  blockedUsers: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }],
+  createdRecipes: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Recipe'
+  }],
 
 
 }, { timestamps: true });

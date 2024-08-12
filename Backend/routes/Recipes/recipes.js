@@ -29,7 +29,7 @@ router.post('/create', isLoggedIn, upload.single('image'), async (req, res) => {
     const result = await cloudinary.uploader.upload(req.file.path);
 
     // Create recipe
-    const post = new Recipe({
+    const recipe = new Recipe({
       uploader_id: user._id,
       uploader_un: user.username,
       title,
@@ -47,13 +47,16 @@ router.post('/create', isLoggedIn, upload.single('image'), async (req, res) => {
       visibility
     });
 
-    console.log(post);
+    console.log(recipe);
 
     // Increment user's postsCount
-    await User.findByIdAndUpdate(user._id, { $inc: { postsCount: 1 } });
+    // await User.findByIdAndUpdate(user._id, { $inc: { postsCount: 1 } });
+    // await User.findByIdAndUpdate(user._id, { $push: { likedPosts: recipe } }, { new: true });
+    await User.findByIdAndUpdate(user._id, { $push: { createdRecipes: recipe }, $inc: { RecipeCount: 1 } }, { new: true });
+
 
     // Save recipe
-    await post.save();
+    await recipe.save();
     res.status(200).json({ 'data': 'success' });
   } catch (err) {
     res.status(500).json({ 'error': err.message });

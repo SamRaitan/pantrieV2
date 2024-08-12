@@ -33,7 +33,7 @@ router.get('/userProfile/:username', (req, res) => {
     User.findOne({ 'username': username })
         .then(userResults => {
             // getting all the posts of the clickeed user
-            Recipe.find({ 'uploader': username }).sort({ createdAt: -1 })
+            Recipe.find({ 'uploader_un': username }).sort({ createdAt: -1 })
                 .then(recipeResult => {
                     res.json({
                         'data': {

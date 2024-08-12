@@ -1,24 +1,31 @@
+import { Container, Group, Stack } from '@mantine/core';
 import { useParams } from 'react-router-dom';
+import { useFetchUserProfileQuery } from '../../../selectors/profiles';
 
-interface RouteParams {
+type RouteParams = {
     username: string;
 }
 
 function VisitedProfile() {
-    const { username } = useParams<RouteParams>(); // Explicitly type the useParams hook
+    const { username } = useParams<RouteParams>();
+    console.log(username);
 
-    // You can now use the id to fetch post data or perform other logic
-    // For example, fetching post data from a server:
-    // useEffect(() => {
-    //   fetchPostData(id);
-    // }, [id]);
+    const { data, isLoading, isError } = useFetchUserProfileQuery(username)
+    console.log(data);
+
+
+    if (isLoading) return <p>Loading...</p>;
+    if (isError) return <p>Error loading recipe.</p>;
 
     return (
-        <div>
-            <h1>profile name </h1>
-            <p>profile ID: {username}</p>
-            {/* Render the post details here */}
-        </div>
+        <Container>
+            <Stack>
+                <Group justify="space-between">
+
+                </Group>
+            </Stack>
+        </Container>
+
     );
 };
 
