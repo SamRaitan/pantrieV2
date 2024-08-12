@@ -11,6 +11,7 @@ type Props = {
 };
 
 function CardLayout({ isLoading, isError, recipes, title }: Props) {
+    console.log(recipes);
 
     const isPhoneOrSmaller = useMediaQuery('(max-width: 820px)');
 

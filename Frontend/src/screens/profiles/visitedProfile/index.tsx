@@ -1,7 +1,10 @@
-import { Container, Group, Stack } from '@mantine/core';
+import { Button, Container, Divider, Grid, Group, Stack, Text } from '@mantine/core';
 import { useParams } from 'react-router-dom';
 import { useFetchUserProfileQuery } from '../../../selectors/profiles';
-import ResponsiveAvatar from './avatar';
+import ResponsiveAvatar from './responsiveAvatar';
+import { RiUserFollowLine } from "react-icons/ri";
+import CardLayout from '../../../components/shared/cardLayout';
+
 
 type RouteParams = {
     username: string;
@@ -20,9 +23,26 @@ function VisitedProfile() {
     return (
         <Container>
             <Stack>
-                <Group justify='space-between'>
-                    <ResponsiveAvatar src={data?.data.User.avatar} alt="User Avatar" />
-                </Group>
+                <Grid m={20} mt={30}>
+                    <Grid.Col span={4}>
+                        <Stack align="center" justify="center">
+                            <ResponsiveAvatar src={data?.data.User.avatar} recipeCount={data?.data.User.RecipeCount} />
+                        </Stack>
+                    </Grid.Col>
+                    <Grid.Col span={8}>
+                        <Stack>
+                            <div>
+                                <Text size='xl' tt="capitalize" fw={500}>{data?.data.User.fullName}</Text>
+                                <Text c="dimmed" fs="italic">{data?.data.User.username}</Text>
+                                <Text>{data?.data.User.bio}</Text>
+                            </div>
+                        </Stack>
+                    </Grid.Col>
+                </Grid>
+
+                <Divider my="md" />
+
+                <CardLayout isLoading={isLoading} isError={isError} recipes={{ data: data?.data.Recipes }} title={`${data?.data.User.fullName}'s Recipes`} />
             </Stack>
         </Container>
     );

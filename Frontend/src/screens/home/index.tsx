@@ -5,6 +5,7 @@ import CardLayout from '../../components/shared/cardLayout';
 
 function Home() {
     const { data: recipes, isLoading, isError } = useFetchRecipesQuery();
+    console.log(recipes);
 
     return (
         <>
