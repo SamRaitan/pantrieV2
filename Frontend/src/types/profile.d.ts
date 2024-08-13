@@ -35,7 +35,7 @@ type FollowRequestParams = {
     visitedUserId: string;
 };
 
-type FollowRequestBody = {
+type FollowRequest = {
     userId: string;
 };
 

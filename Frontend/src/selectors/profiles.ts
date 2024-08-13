@@ -1,5 +1,5 @@
 import { baseApi } from '.';
-import { UserProfileResponse } from '../types/profile';
+import { FollowRequest, UserProfileResponse } from '../types/profile';
 
 export const profileApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
@@ -9,8 +9,18 @@ export const profileApi = baseApi.injectEndpoints({
                 method: 'GET',
             }),
         }),
+        followAUser: build.mutation<FollowRequest, any>({
+            query: ({ vUserId, action, userId }) => ({
+                url: `api/user/${vUserId}/${action}`,
+                method: 'POST',
+                body: { userId },
+            }),
+        }),
     }),
 })
 
 
-export const { useFetchUserProfileQuery } = profileApi;
+export const {
+    useFetchUserProfileQuery,
+    useFollowAUserMutation
+} = profileApi;

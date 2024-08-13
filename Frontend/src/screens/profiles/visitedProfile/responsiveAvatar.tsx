@@ -1,15 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useMediaQuery } from '@mantine/hooks';
 import { Button, Text } from '@mantine/core';
-import { RiUserFollowLine } from 'react-icons/ri';
+import { RiUserFollowFill, RiUserFollowLine } from 'react-icons/ri';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
+import { useFollowAUserMutation } from '../../../selectors/profiles';
 
 type ResponsiveAvatarProps = {
     src: string;
     alt?: string;
-    recipeCount: number | string
+    data: User
+    refetch: any
 };
 
-const ResponsiveAvatar: React.FC<ResponsiveAvatarProps> = ({ src, alt, recipeCount }) => {
+const ResponsiveAvatar: React.FC<ResponsiveAvatarProps> = ({ src, alt, data, refetch }) => {
+    const user = useSelector((state: RootState) => state.auth.user);
+
     const small = useMediaQuery('(max-width: 450px)');
     const medium = useMediaQuery('(min-width: 451px) and (max-width: 950px)');
     const large = useMediaQuery('(min-width: 951px)');
@@ -17,6 +23,27 @@ const ResponsiveAvatar: React.FC<ResponsiveAvatarProps> = ({ src, alt, recipeCou
     const imageSize = small ? 100 : medium ? 150 : large ? 200 : 100;
     const ButtonSize = small ? '100%' : medium ? '60%' : large ? '50%' : '100%';
 
+    const [followUser] = useFollowAUserMutation();
+    const [follow, setFollower] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (user && data) {
+            setFollower(data.followers.includes(user._id));
+        }
+    }, [user, data]);
+
+    const handleFollowClick = async (action: string) => {
+        try {
+            console.log(data._id, action, user?._id);
+
+            await followUser({ vUserId: data._id, action, userId: user?._id }).unwrap();
+            refetch();
+            setFollower(action === 'follow' ? true : false)
+        } catch (error) {
+            console.error('Error following/unfollowing the user:', error);
+            setFollower(action === 'follow' ? false : true)
+        }
+    };
 
     return (
         <>
@@ -39,17 +66,24 @@ const ResponsiveAvatar: React.FC<ResponsiveAvatarProps> = ({ src, alt, recipeCou
                     }}
                 />
             </div>
-            <Text size='sm' c="dimmed">Recipes Uploaded: {recipeCount}</Text>
-            <Button
-                mt={15}
-                w={ButtonSize}
-                variant="filled"
-                color="teal"
-                radius="lg"
-                rightSection={<RiUserFollowLine size={14} />}
-            >
-                follow
-            </Button>
+            <Text size='sm' c="dimmed">Recipes Uploaded: {data.RecipeCount}</Text>
+            {user && (
+                <Button
+                    mt={15}
+                    w={ButtonSize}
+                    variant="filled"
+                    color="teal"
+                    radius="lg"
+                    size="md"
+                    onClick={() => handleFollowClick(data.followers.includes(user._id) ? 'unfollow' : 'follow')}
+                >
+                    {follow ? (
+                        <Text fw={500}> Follow <RiUserFollowLine style={{ fontSize: '24px' }} /></Text>
+                    ) : (
+                        <Text fw={500}> Unfollow <RiUserFollowFill style={{ fontSize: '24px' }} /></Text>
+                    )}
+                </Button>
+            )}
         </>
     );
 };

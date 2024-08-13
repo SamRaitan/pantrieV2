@@ -26,7 +26,7 @@ function RecipeDetail() {
         }
     }, [user, recipes]);
 
-    const handleClick = async (action: string) => {
+    const handleLikeClick = async (action: string) => {
         try {
             await likeARecipe({ postId: id, action, userId: user?._id }).unwrap();
             refetch();
@@ -72,7 +72,7 @@ function RecipeDetail() {
                         color="teal"
                         size="md"
                         radius="md"
-                        onClick={() => handleClick(recipes?.data.likes.includes(user._id) ? 'unlike' : 'like')}
+                        onClick={() => handleLikeClick(recipes?.data.likes.includes(user._id) ? 'unlike' : 'like')}
                     >
                         {like ? (
                             <BiSolidLike style={{ fontSize: '24px' }} />
