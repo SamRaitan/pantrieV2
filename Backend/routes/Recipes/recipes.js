@@ -105,7 +105,12 @@ router.post('/posts/:postId/like', async (req, res) => {
   try {
     const { postId } = req.params;
     const { userId } = req.body;
+    console.log(userId);
+
     const post = await Recipe.findById(postId);
+
+    console.log(!post.likes.includes(userId));
+
     if (!post.likes.includes(userId)) {
       await Recipe.findByIdAndUpdate(postId, { $push: { likes: userId }, $inc: { likesCount: 1 } });
       await User.findByIdAndUpdate(userId, { $push: { likedPosts: postId } });
@@ -122,6 +127,7 @@ router.post('/posts/:postId/unlike', async (req, res) => {
   try {
     const { postId } = req.params;
     const { userId } = req.body;
+
     const post = await Recipe.findById(postId);
 
     if (post.likes.includes(userId)) {

@@ -1,8 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useFetchRecipeQuery, useLikeARecipeMutation } from '../../selectors/recipes';
-import { AspectRatio, Badge, Checkbox, Divider, Grid, List, Paper, Spoiler, Stack, Text, Image, Center, Container, Group, Button, Anchor } from '@mantine/core';
-import { useState } from 'react';
-import { AiOutlineLike } from "react-icons/ai";
+import { Badge, Checkbox, Divider, Grid, List, Paper, Spoiler, Stack, Text, Image, Container, Group, Button, Anchor } from '@mantine/core';
+import { useEffect, useState } from 'react';
 import { BiLike } from "react-icons/bi";
 import { BiSolidLike } from "react-icons/bi";
 import { useSelector } from 'react-redux';
@@ -17,20 +16,24 @@ interface RouteParams {
 function RecipeDetail() {
     const { id } = useParams<RouteParams>();
     const user = useSelector((state: RootState) => state.auth.user);
-    const { data: recipes, isLoading, isError } = useFetchRecipeQuery(id);
+    const { data: recipes, isLoading, isError, refetch } = useFetchRecipeQuery(id);
     const [likeARecipe] = useLikeARecipeMutation();
+    const [like, setLike] = useState<boolean>(false);
 
-    const [isClicked, setIsClicked] = useState(false);
-
-
+    useEffect(() => {
+        if (user && recipes) {
+            setLike(recipes.data.likes.includes(user._id));
+        }
+    }, [user, recipes]);
 
     const handleClick = async (action: string) => {
         try {
-            const { data } = await likeARecipe({ postId: id, action, userId: user }).unwrap();
-            console.log(data);
-            setIsClicked((prevState) => !prevState);
+            await likeARecipe({ postId: id, action, userId: user?._id }).unwrap();
+            refetch();
+            setLike(action === 'like' ? true : false)
         } catch (error) {
             console.error('Error liking/unliking the recipe:', error);
+            setLike(action === 'like' ? false : true)
         }
     };
 
@@ -71,7 +74,7 @@ function RecipeDetail() {
                         radius="md"
                         onClick={() => handleClick(recipes?.data.likes.includes(user._id) ? 'unlike' : 'like')}
                     >
-                        {recipes?.data.likes.includes(user._id) ? (
+                        {like ? (
                             <BiSolidLike style={{ fontSize: '24px' }} />
                         ) : (
                             <BiLike style={{ fontSize: '24px' }} />
