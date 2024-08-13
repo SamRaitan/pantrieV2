@@ -39,8 +39,7 @@ function SignInForm() {
                 }
             } else if ('data' in response) {
                 setNotification(false)
-                const user = response.data;
-                dispatch(setUser(user));
+                dispatch(setUser(response.data?.data.user));
                 window.location.href = '/';
             }
 

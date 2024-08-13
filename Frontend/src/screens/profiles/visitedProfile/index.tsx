@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useFetchUserProfileQuery } from '../../../selectors/profiles';
 import ResponsiveAvatar from './responsiveAvatar';
 import CardLayout from '../../../components/shared/cardLayout';
+import Loading from '../../../components/shared/loader';
 
 
 type RouteParams = {
@@ -15,7 +16,7 @@ function VisitedProfile() {
     const { data, isLoading, isError, refetch } = useFetchUserProfileQuery(username);
 
 
-    if (isLoading) return <p>Loading...</p>;
+    if (isLoading) return <Loading />;
     if (isError) return <p>Error loading profile.</p>;
 
     return (
@@ -52,7 +53,7 @@ function VisitedProfile() {
 
                 <Divider my="md" />
 
-                <CardLayout isLoading={isLoading} isError={isError} recipes={{ data: data?.data.Recipes }} title={`${data?.data.User.fullName}'s Recipes`} />
+                <CardLayout recipes={{ data: data?.data.Recipes }} title={`${data?.data.User.fullName}'s Recipes`} />
             </Stack>
         </Container>
     );

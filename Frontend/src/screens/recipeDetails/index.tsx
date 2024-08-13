@@ -6,6 +6,7 @@ import { BiLike } from "react-icons/bi";
 import { BiSolidLike } from "react-icons/bi";
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
+import Loading from '../../components/shared/loader';
 
 
 
@@ -37,7 +38,7 @@ function RecipeDetail() {
         }
     };
 
-    if (isLoading) return <p>Loading...</p>;
+    if (isLoading) return <Loading />;
     if (isError) return <p>Error loading recipe.</p>;
 
     return (
