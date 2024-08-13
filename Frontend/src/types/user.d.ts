@@ -1,6 +1,7 @@
 type User = {
     _id: string;
     username: string;
+    fullName: string;
     email: string;
     password: string;
     avatar?: string | null;
