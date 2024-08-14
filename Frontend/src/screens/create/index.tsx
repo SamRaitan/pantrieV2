@@ -4,9 +4,11 @@ import { useEffect, useState } from "react";
 import '../signup/signup.css'
 import imageUrls from "../../utils/imagesList";
 import CreateForm from "../../components/forms/Create/createForm";
+import IsUserLoggedIn from "../../components/shared/isLoggedIn";
 
 
 function Create() {
+    IsUserLoggedIn()
     const [opened, { open }] = useDisclosure(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 

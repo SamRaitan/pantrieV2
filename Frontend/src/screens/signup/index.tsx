@@ -4,8 +4,10 @@ import { useDisclosure } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import imageUrls from "../../utils/imagesList";
 import './signup.css'
+import IsUserLoggedIn from "../../components/shared/isLoggedIn";
 
 function SignUp() {
+    IsUserLoggedIn()
     const [opened, { open }] = useDisclosure(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
