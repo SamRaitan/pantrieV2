@@ -1,26 +1,24 @@
 import { useForm } from '@mantine/form';
-import { TextInput, Box, Button, PasswordInput, Group, Loader, Notification } from '@mantine/core';
-import './signInForm.css'
+import { TextInput, Box, Button, PasswordInput, Group, Loader } from '@mantine/core';
+import './signInForm.css';
 import { useSigninMutation } from '../../../selectors/signIn';
-import { useState } from 'react';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import { SerializedError } from '@reduxjs/toolkit/react';
-import { FiXCircle } from "react-icons/fi";
 import { setUser } from '../../../slice/authSlice';
 import { useDispatch } from 'react-redux';
+import { notifications } from '@mantine/notifications';
+import { FiXCircle } from "react-icons/fi";
+
+
 
 type CustomResponse = {
-    data?: SignInResponse; // Use optional property for success case
+    data?: SignInResponse;
     error?: FetchBaseQueryError | SerializedError | SignInResponseError;
 };
 
 function SignInForm() {
-
     const dispatch = useDispatch();
     const [signin, { isLoading }] = useSigninMutation();
-    const [failedNotification, setFailedNotification] = useState<string>();
-    const [notification, setNotification] = useState<boolean>(false);
-
 
     const form = useForm({
         initialValues: { userOrEmail: '', password: '' }
@@ -28,24 +26,38 @@ function SignInForm() {
 
     const submit = async (userData: SignInRequestBody) => {
         try {
-
             const response: CustomResponse = await signin(userData);
             if ('error' in response) {
                 if (response.error && typeof response.error === 'object' && 'data' in response.error) {
-                    setFailedNotification((response.error.data as any).error)
-                    setNotification(true)
+                    notifications.show({
+                        title: 'Sign-in Failed',
+                        message: (response.error.data as any).error || 'Sign-in failed. Please try again.',
+                        color: 'red',
+                        icon: <FiXCircle />
+                    });
                 } else {
-                    throw Error('Something went wrong')
+                    throw Error('Something went wrong');
                 }
             } else if ('data' in response) {
-                setNotification(false)
-                dispatch(setUser(response.data?.data.user));
+                dispatch(setUser(response.data?.user));
+
+                notifications.show({
+                    title: 'Sign-in Successful',
+                    message: 'You have successfully signed in.',
+                    color: 'green',
+                });
                 window.location.href = '/';
             }
 
         } catch (err: any) {
-            setFailedNotification(String(err))
-            setNotification(true)
+            console.log(err);
+
+            notifications.show({
+                title: 'Error',
+                message: String(err) || 'An unexpected error occurred.',
+                color: 'red',
+                icon: <FiXCircle />
+            });
         }
     };
 
@@ -75,17 +87,10 @@ function SignInForm() {
                             <Button className='sign-in-button' color="green" onClick={() => submit(form.values)}>Sign in</Button>
                         </Group>
                     </Box>
-                    {notification && (
-                        <Notification icon={<FiXCircle />} color="red" title="Sign-in Failed" mt="md" withCloseButton={false} withBorder>
-                            {failedNotification}
-                        </Notification>
-                    )}
                 </>
             )}
         </>
     );
 }
 
-export default SignInForm
-
-
+export default SignInForm;

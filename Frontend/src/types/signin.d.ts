@@ -16,9 +16,7 @@ type SignInResponseError = {
 
 // Types for the signin response
 type SignInResponse = {
-    data: {
-        cookie: any
-        user: any
-    }
+    cookie: any
+    user: any
 };
 

@@ -1,12 +1,14 @@
 // SignUpForm.tsx
 import { useState } from 'react';
-import { Stepper, Button, Group, TextInput, PasswordInput, FileInput, StepperProps, Select, Loader } from '@mantine/core';
+import { Stepper, Button, Group, TextInput, PasswordInput, FileInput, StepperProps, Select, Loader, Alert } from '@mantine/core';
 import { useForm, yupResolver } from '@mantine/form';
 import { DateInput } from '@mantine/dates';
 import countryList from '../../../utils/contryList';
 import './signUpForm.css';
 import { signUpSchemaStep1, signUpSchemaStep2, signUpSchemaStep3, signUpSchemaStep4 } from './validation';
 import { useSignupMutation } from '../../../selectors/signUp';
+import { notifications } from '@mantine/notifications';
+import { FiXCircle } from 'react-icons/fi';
 
 function SignUpForm(props: StepperProps) {
     const [active, setActive] = useState(0);
@@ -42,11 +44,23 @@ function SignUpForm(props: StepperProps) {
 
     const submit = async (userData: SignUpRequest) => {
         try {
-            // Call the signup mutation hook with the user data
-            await signup(userData);
+            const response = await signup(userData);
+            if ('error' in response) {
+                throw Error('make sure to fill all feilds, if persists restart process');
+            }
+            notifications.show({
+                title: 'Sign-in Successful',
+                message: 'You have successfully signed in.',
+                color: 'green',
+            });
+            window.location.href = '/';
         } catch (err) {
-            // Handle error
-            console.error('Signup failed:', err);
+            notifications.show({
+                title: 'Sign-Up Failed :(',
+                message: String(err) || 'An unexpected error occurred.',
+                color: 'red',
+                icon: <FiXCircle />
+            });
         }
     };
 
