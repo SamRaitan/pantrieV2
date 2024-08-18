@@ -67,26 +67,10 @@ function NavBar() {
                             <Anchor href="/about" underline="never" c='black'><Text size='md' fw={550}>About</Text></Anchor>
                         </Menu.Item>
                         <Menu.Item color='teal' leftSection={<IoSettingsSharp style={{ width: rem(18), height: rem(18) }} />}>
-                            <Anchor href="/" underline="never" c='black'><Text size='md' fw={550}>Settings</Text></Anchor>
+                            <Anchor href="https://pantrie.onrender.com/" underline="never" c='black'><Text size='md' fw={550}>Settings</Text></Anchor>
                         </Menu.Item>
 
                     </Menu>
-
-
-                    {/* <Stack align="center" justify="center" gap="lg">
-
-                        <Text fw={900} size={'xl'} c='teal' tt="capitalize">{getTimeOfDay()} {user?.fullName}</Text>
-                        <Space h="xs" />
-                        <Anchor href="/" underline="never" c='black'><Group><FaHome style={{ fontSize: '24px' }} /> <Text size='lg' fw={550}>HOME</Text></Group></Anchor>
-                        <Anchor href="/create-recipe-post" underline="never" c='black'><Group><IoIosCreate style={{ fontSize: '24px' }} /><Text size='lg' fw={550}>CREATE</Text></Group></Anchor>
-                        <Anchor href="/signin" underline="never" c='black'><Group><FaSignInAlt style={{ fontSize: '24px' }} /><Text size='lg' fw={550}>SIGN-IN</Text></Group></Anchor>
-                        <Anchor href={`/userProfile/${user?.username}`} underline="never" c='black'><Group><BsPersonCircle style={{ fontSize: '24px' }} /><Text size='lg' fw={550}>PROFILE</Text></Group></Anchor>
-                        <Anchor href="/about" underline="never" c='black'><Group><TiInfo style={{ fontSize: '24px' }} /><Text size='lg' fw={550}>ABOUT</Text></Group></Anchor>
-                        <Space h="md" />
-                        <Anchor href="/" underline="never" c='black'><Group><IoSettingsSharp style={{ fontSize: '24px' }} /><Text size='lg' fw={550}>SETTINGS</Text></Group></Anchor>
-
-                    </Stack> */}
-
                 </Drawer>
             </div>
         </>
