@@ -9,6 +9,15 @@ import { FaSignInAlt } from "react-icons/fa";
 import { TiInfo } from "react-icons/ti";
 import { IoSettingsSharp } from "react-icons/io5";
 import { BsPersonCircle } from "react-icons/bs";
+import { Menu, Button, rem } from '@mantine/core';
+import {
+    IconSettings,
+    IconSearch,
+    IconPhoto,
+    IconMessageCircle,
+    IconTrash,
+    IconArrowsLeftRight,
+} from '@tabler/icons-react';
 
 
 
@@ -34,9 +43,51 @@ function NavBar() {
                     <Burger p={5} m={5} opened={opened} onClick={open} aria-label="Toggle navigation" />
                 </Group>
 
-                <Drawer opened={opened} onClose={close} size={'xs'} title='MENU' zIndex={300}>
+                <Drawer opened={opened} onClose={close} size={'xs'} zIndex={300}>
 
-                    <Stack align="center" justify="center" gap="lg">
+
+                    <Menu shadow="md" width={200}>
+
+                        <Menu.Label>Application</Menu.Label>
+                        <Menu.Item leftSection={<IconSettings style={{ width: rem(14), height: rem(14) }} />}>
+                            Settings
+                        </Menu.Item>
+                        <Menu.Item leftSection={<IconMessageCircle style={{ width: rem(14), height: rem(14) }} />}>
+                            Messages
+                        </Menu.Item>
+                        <Menu.Item leftSection={<IconPhoto style={{ width: rem(14), height: rem(14) }} />}>
+                            Gallery
+                        </Menu.Item>
+                        <Menu.Item
+                            leftSection={<IconSearch style={{ width: rem(14), height: rem(14) }} />}
+                            rightSection={
+                                <Text size="xs" c="dimmed">
+                                    ⌘K
+                                </Text>
+                            }
+                        >
+                            Search
+                        </Menu.Item>
+
+                        <Menu.Divider />
+
+                        <Menu.Label>Danger zone</Menu.Label>
+                        <Menu.Item
+                            leftSection={<IconArrowsLeftRight style={{ width: rem(14), height: rem(14) }} />}
+                        >
+                            Transfer my data
+                        </Menu.Item>
+                        <Menu.Item
+                            color="red"
+                            leftSection={<IconTrash style={{ width: rem(14), height: rem(14) }} />}
+                        >
+                            Delete my account
+                        </Menu.Item>
+
+                    </Menu>
+
+
+                    {/* <Stack align="center" justify="center" gap="lg">
 
                         <Text fw={900} size={'xl'} c='teal' tt="capitalize">{getTimeOfDay()} {user?.fullName}</Text>
                         <Space h="xs" />
@@ -48,7 +99,7 @@ function NavBar() {
                         <Space h="md" />
                         <Anchor href="/" underline="never" c='black'><Group><IoSettingsSharp style={{ fontSize: '24px' }} /><Text size='lg' fw={550}>SETTINGS</Text></Group></Anchor>
 
-                    </Stack>
+                    </Stack> */}
 
                 </Drawer>
             </div>

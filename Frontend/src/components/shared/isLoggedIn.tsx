@@ -6,8 +6,6 @@ function IsUserLoggedIn() {
 
     if (user) {
         window.location.href = '/';
-    } else {
-        window.location.href = '/signin';
     }
 
     return;
