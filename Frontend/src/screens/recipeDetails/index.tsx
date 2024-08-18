@@ -90,30 +90,23 @@ function RecipeDetail() {
                         <Paper shadow="xl" radius="lg" p="lg">
                             <Grid>
                                 <Grid.Col span={{ base: 12, md: 6 }}>
-                                    <Text fw={500}>
-                                        Prep Time: {recipes?.data.prepTime}
-                                    </Text>
+                                    <Text fw={500}>Prep Time: {recipes?.data.prepTime}</Text>
                                 </Grid.Col>
                                 <Grid.Col span={{ base: 12, md: 6 }}>
-                                    <Text fw={500}>
-                                        Cook Time: {recipes?.data.cookTime}
-                                    </Text>
+                                    <Text fw={500}>Cook Time: {recipes?.data.cookTime}</Text>
                                 </Grid.Col>
                                 <Grid.Col span={{ base: 12, md: 6 }}>
-                                    <Text fw={500}>
-                                        Servings: {recipes?.data.servings}
-                                    </Text>
+                                    <Text fw={500}>Servings: {recipes?.data.servings}</Text>
                                 </Grid.Col>
                                 <Grid.Col span={{ base: 12, md: 6 }}>
-                                    <Badge color="teal">
-                                        {recipes?.data.cuisine}
-                                    </Badge>
+                                    <Badge color="teal">{recipes?.data.cuisine}</Badge>
                                 </Grid.Col>
                             </Grid>
                         </Paper>
                     </Grid.Col>
-                    <Text fw={700}>Description</Text>
-                    <Grid.Col span={{ xs: 12, md: 6 }} m={7}>
+
+                    <Grid.Col span={{ xs: 12, md: 7 }}>
+                        <Text fw={700}>Description</Text>
                         <Spoiler maxHeight={120} showLabel="Show more" hideLabel="Hide">
                             {recipes?.data.description}
                         </Spoiler>
@@ -123,8 +116,8 @@ function RecipeDetail() {
                 <Divider my="md" />
 
                 <Grid>
-                    <Text fw={700}>Ingredients</Text>
                     <Grid.Col span={{ xs: 12, md: 4 }}>
+                        <Text fw={700}>Ingredients</Text>
                         {recipes?.data.ingredients.map((ingredient, index) => (
                             <Checkbox
                                 m={5}
@@ -136,9 +129,9 @@ function RecipeDetail() {
                             />
                         ))}
                     </Grid.Col>
-                    <Text mt={7} fw={700}>Cooking Steps</Text>
 
                     <Grid.Col span={{ xs: 12, md: 8 }}>
+                        <Text mt={7} fw={700}>Cooking Steps</Text>
                         <List type="ordered">
                             {recipes?.data.steps.map((step, index) => (
                                 <List.Item key={index}>
