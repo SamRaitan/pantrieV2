@@ -12,23 +12,15 @@ const jwt = require('jsonwebtoken');
 router.post('/create', isLoggedIn, upload.single('image'), async (req, res) => {
   try {
     const { title, ingredients, steps, description, image, prepTime, cookTime, servings, dishType, cuisine, visibility } = req.body;
-    const image2 = req.file;
 
-    // Parse ingredients and steps back into arrays
     const parsedIngredients = JSON.parse(ingredients);
     const parsedSteps = JSON.parse(steps);
 
-    console.log(parsedIngredients);
-
-    // Get user information
     const token = req.cookies.jwt;
     const decodedToken = jwt.verify(token, process.env.COOKIE_SALT);
     const user = await User.findById(decodedToken.id);
 
-    // Upload image to cloudinary
     const result = await cloudinary.uploader.upload(req.file.path);
-
-    // Create recipe
     const recipe = new Recipe({
       uploader_id: user._id,
       uploader_un: user.username,
@@ -46,17 +38,9 @@ router.post('/create', isLoggedIn, upload.single('image'), async (req, res) => {
       cuisine,
       visibility
     });
-
-    console.log(recipe);
-
-    // Increment user's postsCount
-    // await User.findByIdAndUpdate(user._id, { $inc: { postsCount: 1 } });
-    // await User.findByIdAndUpdate(user._id, { $push: { likedPosts: recipe } }, { new: true });
     await User.findByIdAndUpdate(user._id, { $push: { createdRecipes: recipe }, $inc: { RecipeCount: 1 } }, { new: true });
-
-
-    // Save recipe
     await recipe.save();
+
     res.status(200).json({ 'data': 'success' });
   } catch (err) {
     res.status(500).json({ 'error': err.message });
@@ -78,7 +62,6 @@ router.get('/posts/:id', async (req, res) => {
   try {
     const id = req.params.id;
     const result = await Recipe.findById(id);
-    const userResult = await User.findOne({ username: result.uploader });
     res.json({ 'data': result });
   } catch (err) {
     res.status(500).json({ 'error': err.message });
@@ -105,11 +88,8 @@ router.post('/posts/:postId/like', async (req, res) => {
   try {
     const { postId } = req.params;
     const { userId } = req.body;
-    console.log(userId);
 
     const post = await Recipe.findById(postId);
-
-    console.log(!post.likes.includes(userId));
 
     if (!post.likes.includes(userId)) {
       await Recipe.findByIdAndUpdate(postId, { $push: { likes: userId }, $inc: { likesCount: 1 } });
