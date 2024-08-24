@@ -50,10 +50,11 @@ router.post('/create', isLoggedIn, upload.single('image'), async (req, res) => {
 // Get all posts
 router.get('/posts', async (req, res) => {
   try {
-    const result = await Recipe.find().sort({ createdAt: -1 });
-    res.json({ 'data': result });
+    const limit = parseInt(req.query.limit) || 20;
+    const recipes = await Recipe.find().limit(limit);
+    res.json(recipes);
   } catch (err) {
-    res.status(500).json({ 'error': err.message });
+    res.status(500).json({ message: 'Error fetching posts', error: err });
   }
 });
 
