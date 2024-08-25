@@ -10,9 +10,9 @@ export const recipeApi = baseApi.injectEndpoints({
                 body: userData,
             }),
         }),
-        fetchRecipes: build.query<GetRecipes, void>({
-            query: () => ({
-                url: 'api/posts',
+        fetchRecipes: build.query<GetRecipes, number | void>({
+            query: (limit = 20) => ({
+                url: `api/posts?limit=${limit}`,
                 method: 'GET',
             }),
         }),

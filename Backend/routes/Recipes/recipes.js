@@ -52,7 +52,7 @@ router.get('/posts', async (req, res) => {
   try {
     const limit = parseInt(req.query.limit) || 20;
     const recipes = await Recipe.find().limit(limit);
-    res.json(recipes);
+    res.json({ data: recipes });
   } catch (err) {
     res.status(500).json({ message: 'Error fetching posts', error: err });
   }
