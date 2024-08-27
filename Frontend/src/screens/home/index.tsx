@@ -5,6 +5,7 @@ import CardLayout from '../../components/shared/cardLayout';
 import Loading from '../../components/shared/loader';
 import Trending from './trendingRecipes';
 
+
 function Home() {
     const { data: recipes, isLoading, isError } = useFetchRecipesQuery();
 

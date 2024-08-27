@@ -9,7 +9,7 @@ type Props = {
 };
 
 function CardLayout({ recipes, title }: Props) {
-    const isPhoneOrSmaller = useMediaQuery('(max-width: 820px)');
+    const isPhoneOrSmaller = useMediaQuery('(max-width: 745px)');
 
     return (
         <>
@@ -25,7 +25,7 @@ function CardLayout({ recipes, title }: Props) {
                             </SimpleGrid>
                         </Center>
                     ) : (
-                        <SimpleGrid cols={4}>
+                        <SimpleGrid cols={{ xs: 3, md: 4 }}>
                             {recipes.data.map((recipe, index) => (
                                 <MainCard key={index} recipe={recipe} width={220} />
                             ))}

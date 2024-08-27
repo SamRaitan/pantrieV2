@@ -9,7 +9,13 @@ type Props = {
 function MainCard({ width, recipe }: Props) {
 
     return (
-        <Card shadow="sm" padding="lg" radius="md" withBorder w={width}>
+        <Card
+            style={{
+                width: '300px', // Fixed width
+                height: '280px', // Fixed height
+                overflow: 'hidden', // Hide overflow content
+            }}
+            shadow="sm" padding="lg" radius="md" withBorder w={width}>
             <Card.Section component="a" href={`/posts/${recipe._id}`}>
                 <Image
                     src={recipe.cloudinary_image}
