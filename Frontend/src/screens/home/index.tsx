@@ -13,7 +13,7 @@ function Home() {
 
     return (
         <Container>
-            <Text fw={800}>Cuisines</Text>
+            <Text fw={800} pl={10}>Cuisines</Text>
             <Group justify="center">
                 <FoodCuisines />
             </Group>

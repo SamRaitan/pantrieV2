@@ -13,7 +13,7 @@ function CardLayout({ recipes, title }: Props) {
 
     return (
         <>
-            <Text fw={800} m={10} p={10}>{title}</Text>
+            <Text fw={800} m={10} p={0}>{title}</Text>
             <Group justify="center" m={10}>
                 {recipes && recipes.data.length > 0 && ( // Ensure recipes is not empty
                     isPhoneOrSmaller ? (
