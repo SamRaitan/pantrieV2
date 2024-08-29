@@ -24,7 +24,7 @@ function Trending() {
                     dragFree
                 >
                     {recipes && recipes.data.map((recipe, index) => (
-                        <Carousel.Slide><MainCard key={index} recipe={recipe} width={240} /></Carousel.Slide>
+                        <Carousel.Slide><MainCard key={index} recipe={recipe} width={280} /></Carousel.Slide>
                     ))}
                 </Carousel>
             </Blockquote>
