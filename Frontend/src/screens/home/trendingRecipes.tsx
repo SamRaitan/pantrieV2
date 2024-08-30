@@ -15,7 +15,7 @@ function Trending() {
     return (
         <>
             <Text fw={800} p={10}>Trending <FaFireAlt style={{ width: rem(12), height: rem(12) }} /></Text>
-            <Blockquote color="teal" mt="xl" my={0}>
+            <Blockquote color="teal" mt="xl" my={1}>
 
                 <Carousel
                     slideSize="33.333333%"
@@ -24,7 +24,7 @@ function Trending() {
                     dragFree
                 >
                     {recipes && recipes.data.map((recipe, index) => (
-                        <Carousel.Slide><MainCard key={index} recipe={recipe} width={280} /></Carousel.Slide>
+                        <Carousel.Slide><MainCard key={index} recipe={recipe} width={270} /></Carousel.Slide>
                     ))}
                 </Carousel>
             </Blockquote>

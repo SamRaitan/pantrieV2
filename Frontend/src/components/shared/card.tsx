@@ -1,4 +1,4 @@
-import { Card, Image, Text, Group, Anchor } from '@mantine/core';
+import { Card, Image, Text, Group, Anchor, Rating } from '@mantine/core';
 import { Recipe } from '../../types/recipe';
 
 type Props = {
@@ -28,8 +28,6 @@ function MainCard({ width, recipe }: Props) {
                 {recipe.uploader_un}
             </Anchor>
 
-
-
             <Group mb="xs">
                 <Text lineClamp={1} fw={500}>{recipe.title}</Text>
             </Group>
@@ -37,6 +35,12 @@ function MainCard({ width, recipe }: Props) {
             <Text lineClamp={2} size="sm" c="dimmed">
                 {recipe.description}
             </Text>
+
+            {/* Star Rating */}
+            <Group justify="apart" mt="md">
+                <Rating value={recipe.rating} readOnly size="xs" />
+                <Text size="sm" c="dimmed">{recipe.rating}/5</Text>
+            </Group>
         </Card>
     );
 }

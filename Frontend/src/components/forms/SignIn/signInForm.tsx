@@ -5,7 +5,7 @@ import { useSigninMutation } from '../../../selectors/signIn';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import { SerializedError } from '@reduxjs/toolkit/react';
 import { setUser } from '../../../slice/authSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, } from 'react-redux';
 import { notifications } from '@mantine/notifications';
 import { FiXCircle } from "react-icons/fi";
 
@@ -18,6 +18,7 @@ type CustomResponse = {
 
 function SignInForm() {
     const dispatch = useDispatch();
+
     const [signin, { isLoading }] = useSigninMutation();
 
     const form = useForm({
@@ -27,6 +28,8 @@ function SignInForm() {
     const submit = async (userData: SignInRequestBody) => {
         try {
             const response: CustomResponse = await signin(userData);
+
+
             if ('error' in response) {
                 if (response.error && typeof response.error === 'object' && 'data' in response.error) {
                     notifications.show({
@@ -39,14 +42,17 @@ function SignInForm() {
                     throw Error('Something went wrong');
                 }
             } else if ('data' in response) {
-                dispatch(setUser(response.data?.user));
+                dispatch(setUser({
+                    user: response.data?.user,
+                    cookie: response.data?.cookie
+                }));
 
                 notifications.show({
                     title: 'Sign-in Successful',
                     message: 'You have successfully signed in.',
                     color: 'green',
                 });
-                window.location.href = '/';
+                // window.location.href = '/';
             }
 
         } catch (err: any) {

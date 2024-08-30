@@ -18,6 +18,8 @@ type Recipe = {
     visibility: 'Public' | 'Private' | 'Unlisted';
     likesCount: number;
     likes: string[];
+    rating: number
+    ratingCount: string[]
     createdAt: Date;
     updatedAt: Date;
 }
