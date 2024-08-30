@@ -27,10 +27,6 @@ export function IsCookie() {
 
         if (cookieToken !== reduxToken) {
             dispatch(clearUser());
-            console.log('dispached');
-            console.log(cookieToken, reduxToken);
-            console.log(reduxTokene);
-
         }
 
     }, []);

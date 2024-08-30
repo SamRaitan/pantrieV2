@@ -141,13 +141,11 @@ function CreateForm() {
             formData.append('visibility', data.visibility);
 
             try {
-                console.log(formData);
                 const response = await createRecipe(formData as any);
                 if ('error' in response) {
                     if ((response as createPostError).error.status === 401) {
                         dispatch(clearUser());
                         window.location.href = '/signin';
-                        console.log(response);
                     }
                 } else {
 

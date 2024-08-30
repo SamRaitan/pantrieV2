@@ -34,8 +34,6 @@ const ResponsiveAvatar: React.FC<ResponsiveAvatarProps> = ({ src, alt, data, ref
 
     const handleFollowClick = async (action: string) => {
         try {
-            console.log(data._id, action, user?._id);
-
             await followUser({ vUserId: data._id, action, userId: user?._id }).unwrap();
             refetch();
             setFollower(action === 'follow' ? true : false)

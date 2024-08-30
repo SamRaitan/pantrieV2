@@ -12,7 +12,6 @@ type RouteParams = {
 
 function VisitedProfile() {
     const { username } = useParams<RouteParams>();
-    console.log(username);
     const { data, isLoading, isError, refetch } = useFetchUserProfileQuery(username);
 
 
