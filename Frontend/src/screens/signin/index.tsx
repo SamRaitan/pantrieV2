@@ -4,7 +4,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import '../signup/signup.css'
 import SignInForm from "../../components/forms/SignIn/signInForm";
-import IsUserLoggedIn from "../../components/shared/isLoggedIn";
+import { IsUserLoggedIn } from "../../components/shared/isLoggedIn";
 
 
 function SignIn() {
