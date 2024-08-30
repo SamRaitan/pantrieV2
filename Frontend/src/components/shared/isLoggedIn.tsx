@@ -16,7 +16,6 @@ export function IsUserLoggedIn() {
 export function IsCookie() {
     const dispatch = useDispatch();
     const reduxToken = useSelector((state: RootState) => state.auth.token);
-    const reduxTokene = useSelector((state: RootState) => state.auth);
 
     useEffect(() => {
         // Retrieve Token from Cookie

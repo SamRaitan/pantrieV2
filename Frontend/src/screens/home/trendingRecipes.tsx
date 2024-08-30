@@ -1,5 +1,5 @@
 import { useFetchRecipesQuery } from '../../selectors/recipes';
-import { Blockquote, Container, Group, rem, Text } from '@mantine/core';
+import { Blockquote, rem, Text } from '@mantine/core';
 import Loading from '../../components/shared/loader';
 import { Carousel } from '@mantine/carousel';
 import MainCard from '../../components/shared/card';
