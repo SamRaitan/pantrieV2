@@ -18,7 +18,7 @@ function Home() {
             <Group justify="center">
                 <FoodCuisines />
             </Group>
-            <CardLayout recipes={recipes} title='For You' />
+            <CardLayout recipes={recipes!} title='For You' />
             <Divider my="md" />
             <Trending />
         </Container>

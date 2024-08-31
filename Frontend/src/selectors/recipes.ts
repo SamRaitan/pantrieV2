@@ -1,5 +1,5 @@
 import { baseApi } from '.';
-import { createPost, createResponse, GetRecipe, GetRecipes, LikeResponse } from '../types/recipe';
+import { createPost, createResponse, GetRecipe, GetRecipes, LikeResponse, Recipe } from '../types/recipe';
 
 export const recipeApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
@@ -10,7 +10,7 @@ export const recipeApi = baseApi.injectEndpoints({
                 body: userData,
             }),
         }),
-        fetchRecipes: build.query<GetRecipes, number | void>({
+        fetchRecipes: build.query<GetRecipes | Recipe[], number | void>({
             query: (limit = 20) => ({
                 url: `api/posts?limit=${limit}`,
                 method: 'GET',

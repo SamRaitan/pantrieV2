@@ -5,7 +5,7 @@ import { useMediaQuery } from "@mantine/hooks";
 
 type Props = {
     recipes: {
-        data?: Recipe[]; // Make data optional
+        data?: Recipe[];
     };
     title: string;
 };
