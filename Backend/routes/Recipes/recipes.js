@@ -121,4 +121,24 @@ router.post('/posts/:postId/unlike', async (req, res) => {
   }
 });
 
+router.post('/posts/:postId/rating', async (req, res) => {
+  try {
+    const { postId } = req.params;
+    const { userId, userRating } = req.body;
+
+    const post = await Recipe.findById(postId);
+
+    if (!post.likes.includes(userId)) {
+      await Recipe.findByIdAndUpdate(postId, { $push: { ratings: { userId, rating: userRating } }, $inc: { ratingCount: 1 } }, { new: true });
+      await User.findByIdAndUpdate(userId, { $push: { ratings: { postId, rating: userRating } } }, { new: true });
+    } else {
+
+    }
+    res.json({ 'data': 'liked' });
+  } catch (err) {
+    res.status(500).json({ 'error': err.message });
+  }
+});
+
+
 module.exports = router;
