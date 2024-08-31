@@ -1,12 +1,10 @@
 import MainCard from "./card";
 import { Center, Group, SimpleGrid, Text } from '@mantine/core';
-import { Recipe } from "../../types/recipe";
+import { GetRecipes } from "../../types/recipe";
 import { useMediaQuery } from "@mantine/hooks";
 
 type Props = {
-    recipes: {
-        data?: Recipe[];
-    };
+    recipes: GetRecipes
     title: string;
 };
 
