@@ -1,6 +1,6 @@
 // SignUpForm.tsx
 import { useState } from 'react';
-import { Stepper, Button, Group, TextInput, PasswordInput, FileInput, StepperProps, Select, Loader, Alert } from '@mantine/core';
+import { Stepper, Button, Group, TextInput, PasswordInput, FileInput, StepperProps, Select, Loader } from '@mantine/core';
 import { useForm, yupResolver } from '@mantine/form';
 import { DateInput } from '@mantine/dates';
 import countryList from '../../../utils/contryList';

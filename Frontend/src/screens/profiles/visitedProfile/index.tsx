@@ -52,7 +52,7 @@ function VisitedProfile() {
 
                 <Divider my="md" />
 
-                <CardLayout recipes={{ data: data?.data?.Recipes }} title={`${data?.data.User.fullName}'s Recipes`} />
+                <CardLayout recipes={{ data: data!.data.Recipes }} title={`${data?.data.User.fullName}'s Recipes`} />
             </Stack>
         </Container>
     );

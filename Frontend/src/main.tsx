@@ -7,7 +7,6 @@ import { Notifications } from '@mantine/notifications';
 import '@mantine/notifications/styles.css';
 import '@mantine/core/styles.css';
 import '@mantine/carousel/styles.css';
-import { theme } from './components/theme.ts'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <Provider store={store}>

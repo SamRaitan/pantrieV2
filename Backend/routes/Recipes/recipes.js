@@ -128,7 +128,7 @@ router.post('/posts/:postId/rating', async (req, res) => {
 
     const post = await Recipe.findById(postId);
 
-    if (!post.likes.includes(userId)) {
+    if (!post.ratings.includes(userId)) {
       await Recipe.findByIdAndUpdate(postId, { $push: { ratings: { userId, rating: userRating } }, $inc: { ratingCount: 1 } }, { new: true });
       await User.findByIdAndUpdate(userId, { $push: { ratings: { postId, rating: userRating } } }, { new: true });
     } else {

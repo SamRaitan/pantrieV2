@@ -1,6 +1,5 @@
 import { useDisclosure } from '@mantine/hooks';
-import { Drawer, Burger, Group, Image, Text, Stack, Anchor, Space } from '@mantine/core';
-import getTimeOfDay from '../../utils/getTime';
+import { Drawer, Burger, Group, Image, Text, Anchor } from '@mantine/core';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { FaHome } from "react-icons/fa";
@@ -9,18 +8,7 @@ import { FaSignInAlt } from "react-icons/fa";
 import { TiInfo } from "react-icons/ti";
 import { IoSettingsSharp } from "react-icons/io5";
 import { BsPersonCircle } from "react-icons/bs";
-import { Menu, Button, rem } from '@mantine/core';
-import {
-    IconSettings,
-    IconSearch,
-    IconPhoto,
-    IconMessageCircle,
-    IconTrash,
-    IconArrowsLeftRight,
-} from '@tabler/icons-react';
-
-
-
+import { Menu, rem } from '@mantine/core';
 
 
 function NavBar() {

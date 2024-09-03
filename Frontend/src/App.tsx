@@ -1,5 +1,5 @@
 import AppRouter from "./router"
-import { AppShell, AppShellFooter } from "@mantine/core";
+import { AppShell } from "@mantine/core";
 import { IsCookie } from "./components/shared/isLoggedIn";
 
 function App() {
