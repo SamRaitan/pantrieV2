@@ -1,11 +1,12 @@
 import { useParams } from 'react-router-dom';
-import { useFetchRecipeQuery, useLikeARecipeMutation, } from '../../selectors/recipes';
+import { useFetchRecipeQuery, useLikeARecipeMutation, useRateARecipeMutation, } from '../../selectors/recipes';
 import { Badge, Checkbox, Divider, Grid, List, Paper, Spoiler, Stack, Text, Image, Container, Group, Button, Anchor, AspectRatio, Rating } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import { BiLike, BiSolidLike } from "react-icons/bi";
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import Loading from '../../components/shared/loader';
+import { notifications } from '@mantine/notifications';
 
 interface RouteParams {
     id: string;
@@ -16,14 +17,12 @@ function RecipeDetail() {
     const user = useSelector((state: RootState) => state.auth.user);
     const { data: recipes, isLoading, isError, refetch } = useFetchRecipeQuery(id);
     const [likeARecipe] = useLikeARecipeMutation();
-    // const [rateRecipe] = useRateRecipeMutation();
+    const [rateRecipe] = useRateARecipeMutation();
     const [like, setLike] = useState<boolean>(false);
-    const [rating, setRating] = useState<number | null>(null);
 
     useEffect(() => {
         if (user && recipes) {
             setLike(recipes.data.likes.includes(user._id));
-            setRating(recipes.data.rating || null);
         }
     }, [user, recipes]);
 
@@ -38,17 +37,28 @@ function RecipeDetail() {
         }
     };
 
-    // const handleRatingChange = async (value: number) => {
-    //     if (user) {
-    //         try {
-    //             await rateRecipe({ postId: id, rating: value, userId: user._id }).unwrap();
-    //             setRating(value);
-    //             refetch();
-    //         } catch (error) {
-    //             console.error('Error rating the recipe:', error);
-    //         }
-    //     }
-    // };
+    const handleRatingChange = async (value: number) => {
+        if (user) {
+            try {
+                await rateRecipe({ postId: id, rating: value, userId: user._id }).unwrap();
+                refetch();
+
+                notifications.show({
+                    title: 'Rating Success',
+                    message: `You have Rated The Recipe ${value} Stars ⭐️`,
+                    color: 'green',
+                });
+            } catch (error) {
+
+                notifications.show({
+                    title: 'Error Rating',
+                    message: `Rating Recipe Failed`,
+                    color: 'red',
+                });
+            }
+        }
+
+    };
 
     if (isLoading) return <Loading />;
     if (isError) return <p>Error loading recipe.</p>;
@@ -61,9 +71,12 @@ function RecipeDetail() {
                         {recipes?.data.title}
                     </Text>
                     <Rating
-                        defaultValue={rating ?? 0}
-                        // onChange={handleRatingChange}
+                        color="teal"
+                        defaultValue={recipes?.data.averageRating}
+                        onChange={handleRatingChange}
                         size="lg"
+                        fractions={2}
+                        readOnly={!user}
                     />
                 </Group>
 

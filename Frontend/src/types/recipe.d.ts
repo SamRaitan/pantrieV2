@@ -20,11 +20,16 @@ type Recipe = {
     likes: string[];
     rating: number
     ratingCount: string[]
+    averageRating: number
     createdAt: Date;
     updatedAt: Date;
 }
 
 type LikeResponse = {
+    data: string;
+}
+
+type rateResponse = {
     data: string;
 }
 

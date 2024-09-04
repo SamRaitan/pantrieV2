@@ -137,6 +137,19 @@ router.post('/posts/:postId/rating', async (req, res) => {
       await User.findOneAndUpdate({ _id: userId, "ratings.postId": postId }, { $set: { "ratings.$.rating": rating }, }, { new: true });
     }
 
+    const recipe = await Recipe.findById(postId);
+    const totalRating = recipe.ratings.reduce((sumOfRatings, currentRate) =>
+      sumOfRatings + currentRate.rating, 0
+    );
+    const averageRating = totalRating / recipe.ratings.length;
+    console.log(totalRating, averageRating);
+
+    await Recipe.findByIdAndUpdate(
+      postId,
+      { $set: { averageRating: averageRating } },
+      { new: true }
+    );
+
     res.json({ 'data': 'rated' });
   } catch (err) {
     res.status(500).json({ 'error': err.message });
