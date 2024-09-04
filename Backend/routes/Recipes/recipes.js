@@ -124,17 +124,19 @@ router.post('/posts/:postId/unlike', async (req, res) => {
 router.post('/posts/:postId/rating', async (req, res) => {
   try {
     const { postId } = req.params;
-    const { userId, userRating } = req.body;
+    const { userId, rating } = req.body;
 
     const post = await Recipe.findById(postId);
+    const hasRated = post.ratings.some(rating => rating.userId.equals(userId));
 
-    if (!post.ratings.includes(userId)) {
-      await Recipe.findByIdAndUpdate(postId, { $push: { ratings: { userId, rating: userRating } }, $inc: { ratingCount: 1 } }, { new: true });
-      await User.findByIdAndUpdate(userId, { $push: { ratings: { postId, rating: userRating } } }, { new: true });
+    if (hasRated) {
+      await Recipe.findByIdAndUpdate(postId, { $push: { ratings: { userId, rating: rating } }, $inc: { ratingCount: 1 } });
+      await User.findByIdAndUpdate(userId, { $push: { ratings: { postId, rating: rating } } });
     } else {
+      console.log('noni pero');
 
     }
-    res.json({ 'data': 'liked' });
+    res.json({ 'data': 'rated' });
   } catch (err) {
     res.status(500).json({ 'error': err.message });
   }
