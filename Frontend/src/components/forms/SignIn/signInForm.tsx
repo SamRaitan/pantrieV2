@@ -52,7 +52,7 @@ function SignInForm() {
                     message: 'You have successfully signed in.',
                     color: 'green',
                 });
-                // window.location.href = '/';
+                window.location.href = '/';
             }
 
         } catch (err: any) {

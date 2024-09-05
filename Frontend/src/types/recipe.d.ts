@@ -18,11 +18,17 @@ type Recipe = {
     visibility: 'Public' | 'Private' | 'Unlisted';
     likesCount: number;
     likes: string[];
-    rating: number
+    ratings: Ratings[]
     ratingCount: string[]
     averageRating: number
     createdAt: Date;
     updatedAt: Date;
+}
+
+type Ratings = {
+    _id: any;
+    userId: any;
+    rating: number;
 }
 
 type LikeResponse = {

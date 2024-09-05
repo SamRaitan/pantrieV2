@@ -1,4 +1,4 @@
-import { Card, Image, Text, Group, Anchor, Rating } from '@mantine/core';
+import { Card, Image, Text, Group, Anchor, Rating, Badge } from '@mantine/core';
 import { Recipe } from '../../types/recipe';
 
 type Props = {
@@ -11,35 +11,47 @@ function MainCard({ width, recipe }: Props) {
     return (
         <Card
             style={{
-                width: '300px', // Fixed width
-                height: '280px', // Fixed height
-                overflow: 'hidden', // Hide overflow content
+                width: '320px',
+                height: '320px',
+                overflow: 'hidden',
+                transition: 'transform 0.2s ease',
             }}
-            shadow="sm" padding="lg" radius="md" withBorder w={width}>
-            <Card.Section component="a" href={`/posts/${recipe._id}`}>
+            shadow="lg" padding="md" radius="lg" withBorder w={width}
+            onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
+            onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
+            <Card.Section component="a" href={`/posts/${recipe._id}`} style={{ position: 'relative' }}>
                 <Image
                     src={recipe.cloudinary_image}
-                    height={160}
+                    height={180}
                     alt="recipe image"
+                    fit="cover"
                 />
+                <Badge
+                    color="teal"
+                    size="sm"
+                    style={{ position: 'absolute', top: 10, left: 10 }}>
+                    {recipe.cuisine}
+                </Badge>
             </Card.Section>
 
-            <Anchor href={`/userProfile/${recipe.uploader_un}`} size='sm' c='black' target="_blank" underline="never">
-                {recipe.uploader_un}
-            </Anchor>
-
-            <Group mb="xs">
-                <Text lineClamp={1} fw={500}>{recipe.title}</Text>
+            <Group justify="space-between" mt="sm">
+                <Anchor href={`/userProfile/${recipe.uploader_un}`} size="xs" color="dimmed" target="_blank" underline="hover">
+                    {recipe.uploader_un}
+                </Anchor>
+                <Text size="xs" color="dimmed">{recipe.cookTime}</Text>
             </Group>
 
-            <Text lineClamp={2} size="sm" c="dimmed">
+            <Text lineClamp={1} fw={600} mt={4} size="md">
+                {recipe.title}
+            </Text>
+
+            <Text lineClamp={2} size="xs" mt={2} color="dimmed">
                 {recipe.description}
             </Text>
 
-            {/* Star Rating */}
-            <Group justify="apart" mt="md">
-                <Rating value={recipe.rating} readOnly size="xs" />
-                <Text size="sm" c="dimmed">{recipe.rating}/5</Text>
+            <Group justify="space-between" mt="md" align="center" gap="xs">
+                <Rating value={recipe.averageRating} readOnly size="xs" />
+                <Text size="xs" color="dimmed">({recipe.ratings.length})</Text>
             </Group>
         </Card>
     );
