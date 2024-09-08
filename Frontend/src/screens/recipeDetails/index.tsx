@@ -64,7 +64,7 @@ function RecipeDetail() {
     if (isError) return <p>Error loading recipe.</p>;
 
     return (
-        <Container size="lg" py="xl">
+        <Container py="xl">
             <Stack gap='lg'>
                 <Group justify="space-between" align="center">
                     <Text tt="capitalize" size="2xl" fw={700}>

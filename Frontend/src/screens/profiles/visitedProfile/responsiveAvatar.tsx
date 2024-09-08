@@ -9,8 +9,8 @@ import { useFollowAUserMutation } from '../../../selectors/profiles';
 type ResponsiveAvatarProps = {
     src: string;
     alt?: string;
-    data: User
-    refetch: any
+    data: User;
+    refetch: any;
 };
 
 const ResponsiveAvatar: React.FC<ResponsiveAvatarProps> = ({ src, alt, data, refetch }) => {
@@ -36,35 +36,39 @@ const ResponsiveAvatar: React.FC<ResponsiveAvatarProps> = ({ src, alt, data, ref
         try {
             await followUser({ vUserId: data._id, action, userId: user?._id }).unwrap();
             refetch();
-            setFollower(action === 'follow' ? true : false)
+            setFollower(action === 'follow' ? true : false);
         } catch (error) {
             console.error('Error following/unfollowing the user:', error);
-            setFollower(action === 'follow' ? false : true)
+            setFollower(action === 'follow' ? false : true);
         }
     };
 
     return (
-        <>
-            <div style={{
-                width: `${imageSize}px`,
-                height: `${imageSize}px`,
-                borderRadius: '50%',
-                overflow: 'hidden',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-            }}>
+        <div style={{ textAlign: 'center' }}>
+            <div
+                style={{
+                    width: `${imageSize}px`,
+                    height: `${imageSize}px`,
+                    borderRadius: '50%',
+                    overflow: 'hidden',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}
+            >
                 <img
                     src={src}
                     alt={alt}
                     style={{
                         width: '100%',
                         height: '100%',
-                        objectFit: 'cover'
+                        objectFit: 'cover',
                     }}
                 />
             </div>
-            <Text size='sm' c="dimmed">Recipes Uploaded: {data.RecipeCount}</Text>
+            <Text mt={10} size="sm" color="dimmed">
+                Recipes Uploaded: {data.RecipeCount}
+            </Text>
             {user && (
                 <Button
                     mt={15}
@@ -76,13 +80,17 @@ const ResponsiveAvatar: React.FC<ResponsiveAvatarProps> = ({ src, alt, data, ref
                     onClick={() => handleFollowClick(data.followers.includes(user._id) ? 'unfollow' : 'follow')}
                 >
                     {follow ? (
-                        <Text fw={500}> Follow <RiUserFollowLine style={{ fontSize: '24px' }} /></Text>
+                        <Text fw={500}>
+                            Unfollow <RiUserFollowLine style={{ fontSize: '20px' }} />
+                        </Text>
                     ) : (
-                        <Text fw={500}> Unfollow <RiUserFollowFill style={{ fontSize: '24px' }} /></Text>
+                        <Text fw={500}>
+                            Follow <RiUserFollowFill style={{ fontSize: '20px' }} />
+                        </Text>
                     )}
                 </Button>
             )}
-        </>
+        </div>
     );
 };
 

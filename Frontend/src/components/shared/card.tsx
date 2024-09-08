@@ -52,7 +52,7 @@ function MainCard({ width, recipe, isRegular }: Props) {
 
             <Group justify="space-between" mt="md" align="center" gap="xs">
                 <Rating value={recipe.averageRating} readOnly size="xs" />
-                <Text size="xs" color="dimmed">({recipe.ratings.length})</Text>
+                <Text size="xs" c="dimmed">({recipe.ratings.length})</Text>
             </Group>
         </Card>
     );
