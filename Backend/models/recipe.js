@@ -67,11 +67,13 @@ const recipeSchema = new Schema({
   },
   likesCount: {
     type: Number,
-    default: 0
+    default: 0,
+    required: true
   },
   likes: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
+    required: true
   }],
   ratings: [{
     userId: {
@@ -84,15 +86,18 @@ const recipeSchema = new Schema({
       required: true,
       min: 1,
       max: 5
-    }
+    },
+    required: true
   }],
   averageRating: {
     type: Number,
-    default: 0
+    default: 0,
+    required: true
   },
   ratingCount: {
     type: Number,
-    default: 0
+    default: 0,
+    required: true
   }
 
 }, { timestamps: true });
