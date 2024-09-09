@@ -86,8 +86,7 @@ const recipeSchema = new Schema({
       required: true,
       min: 1,
       max: 5
-    },
-    required: true
+    }
   }],
   averageRating: {
     type: Number,
