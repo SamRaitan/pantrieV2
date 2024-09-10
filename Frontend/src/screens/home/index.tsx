@@ -1,4 +1,4 @@
-import { Container, Divider, Group, Text } from '@mantine/core';
+import { Anchor, Button, Container, Divider, Group, Text } from '@mantine/core';
 import FoodCuisines from '../../components/foodTypeCarusel';
 import { useFetchRecipesQuery } from '../../selectors/recipes';
 import CardLayout from '../../components/shared/cardLayout';
@@ -19,6 +19,11 @@ function Home() {
                 <FoodCuisines />
             </Group>
             <CardLayout recipes={recipes!} title='For You' />
+            <Group justify='center'>
+                <Anchor href="/discover">
+                    <Button color={'teal'}>More Recipes</Button>
+                </Anchor>
+            </Group>
             <Divider my="md" />
             <Trending />
         </Container>

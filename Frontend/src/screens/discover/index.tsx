@@ -6,7 +6,7 @@ function Discover() {
 
     return (
         <div >
-
+            hi
 
         </div>
 
