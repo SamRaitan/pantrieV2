@@ -58,6 +58,26 @@ router.get('/posts', async (req, res) => {
   }
 });
 
+router.get('/discover', async (req, res) => {
+  try {
+    const { cuisine, from = 0, to = 30 } = req.query;
+    console.log(cuisine);
+
+    let query = {};
+    if (cuisine) {
+      query.cuisine = cuisine;
+    }
+
+    const recipes = await Recipe.find(query)
+      .skip(parseInt(from))
+      .limit(parseInt(to) - parseInt(from));
+
+    res.status(200).json({ data: recipes });
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching recipes', error: err.message });
+  }
+});
+
 // Get post details
 router.get('/posts/:id', async (req, res) => {
   try {
