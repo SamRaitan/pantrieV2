@@ -5,10 +5,6 @@ interface RouteParams {
     cuisine: string;
 }
 
-type noni = {
-    text: string | undefined
-}
-
 function Discover() {
     let query = { cuisine: '', from: 0, to: 30 }
     const { cuisine } = useParams<RouteParams>();
