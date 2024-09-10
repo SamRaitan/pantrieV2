@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import SignUp from '../screens/signup/index';
 import SignIn from '../screens/signin/index';
+import Discover from '../screens/discover/index'
 import NavBar from '../components/shared/navbar';
 import Home from '../screens/home';
 import Create from '../screens/create/index';
@@ -26,6 +27,9 @@ const AppRouter = () => {
                         </Route>
                         <Route exact path="/posts/:id">
                             <RecipeDetail />
+                        </Route>
+                        <Route exact path="/posts/discover">
+                            <Discover />
                         </Route>
                         <Route exact path="/userProfile/:username">
                             <VisitedProfile />
