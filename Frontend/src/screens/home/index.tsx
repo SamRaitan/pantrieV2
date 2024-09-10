@@ -20,7 +20,7 @@ function Home() {
             </Group>
             <CardLayout recipes={recipes!} title='For You' />
             <Group justify='center'>
-                <Anchor href="/discover">
+                <Anchor href={`/discover/${undefined}`}>
                     <Button color={'teal'}>More Recipes</Button>
                 </Anchor>
             </Group>

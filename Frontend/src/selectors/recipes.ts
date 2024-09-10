@@ -36,8 +36,22 @@ export const recipeApi = baseApi.injectEndpoints({
                 body: { userId, rating },
             }),
         }),
+        discoverRecipes: build.query<any, { cuisine?: string; from?: number; to?: number }>({
+            query: ({ cuisine = '', from = 0, to = 30 }) => {
+                let queryString = `api/discover?from=${from}&to=${to}`;
+                if (cuisine) {
+                    queryString += `&cuisine=${cuisine}`;
+                }
+                console.log(cuisine);
+
+                return {
+                    url: queryString,
+                    method: 'GET',
+                };
+            },
+        }),
     }),
-})
+});
 
 export const {
     usePostRecipesMutation,
@@ -45,4 +59,5 @@ export const {
     useFetchRecipeQuery,
     useLikeARecipeMutation,
     useRateARecipeMutation,
+    useDiscoverRecipesQuery, // Add the hook for discoverRecipes
 } = recipeApi;
