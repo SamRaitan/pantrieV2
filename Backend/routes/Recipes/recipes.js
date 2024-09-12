@@ -61,12 +61,12 @@ router.get('/posts', async (req, res) => {
 router.get('/discover', async (req, res) => {
   try {
     const { cuisine, from = 0, to = 30 } = req.query;
-    console.log(cuisine);
 
     let query = {};
-    if (cuisine) {
+    if (cuisine !== 'undefined') {
       query.cuisine = cuisine;
     }
+    console.log(query);
 
     const recipes = await Recipe.find(query)
       .skip(parseInt(from))
@@ -75,6 +75,25 @@ router.get('/discover', async (req, res) => {
     res.status(200).json({ data: recipes });
   } catch (err) {
     res.status(500).json({ message: 'Error fetching recipes', error: err.message });
+  }
+});
+
+// Add search functionality in the backend
+router.get('/search', async (req, res) => {
+  try {
+    const { query } = req.query;
+
+    // Search by recipe title or uploader username
+    const recipes = await Recipe.find({
+      $or: [
+        { title: { $regex: query, $options: 'i' } }, // Case-insensitive search for recipe title
+        { uploader_un: { $regex: query, $options: 'i' } }, // Case-insensitive search for uploader username
+      ]
+    }).limit(5); // Limit the results to 5 for recommendations
+
+    res.json({ data: recipes });
+  } catch (err) {
+    res.status(500).json({ message: 'Error searching recipes', error: err.message });
   }
 });
 
