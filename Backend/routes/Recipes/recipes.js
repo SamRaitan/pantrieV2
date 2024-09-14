@@ -3,6 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const Recipe = require('../../models/recipe');
 const { isLoggedIn } = require('../../middleware/Authmiddleware');
+const getSearchQuery = require('./discover')
 const User = require('../../models/user');
 const cloudinary = require('../../utils/cloudinary');
 const upload = require('../../utils/multer');
@@ -58,30 +59,24 @@ router.get('/posts', async (req, res) => {
   }
 });
 
-router.get('/discover', async (req, res) => {
-  try {
-    const { cuisine, from = 0, to = 30 } = req.query;
+router.get('/discover', getSearchQuery)
 
-    let query = {};
-    if (cuisine !== 'undefined') {
-      query.cuisine = cuisine;
-    }
-    console.log(query);
+// router.get('/discover1', async (req, res) => {
+//   try {
+//     const { cuisine, searchQuery, from = 0, to = 30 } = req.query;
 
-    const recipes = await Recipe.find(query)
-      .skip(parseInt(from))
-      .limit(parseInt(to) - parseInt(from));
 
-    res.status(200).json({ data: recipes });
-  } catch (err) {
-    res.status(500).json({ message: 'Error fetching recipes', error: err.message });
-  }
-});
+//     res.status(200).json({ data: getSearchQuery(searchQuery, cuisine, from, to) });
+//   } catch (err) {
+//     res.status(500).json({ message: 'Error fetching recipes', error: err.message });
+//   }
+// });
 
 // Add search functionality in the backend
 router.get('/search', async (req, res) => {
   try {
     const { query } = req.query;
+    console.log(query);
 
     // Search by recipe title or uploader username
     const recipes = await Recipe.find({
