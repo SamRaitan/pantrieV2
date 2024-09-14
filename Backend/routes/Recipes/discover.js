@@ -5,17 +5,12 @@ const NOTALLOWED = ['', ' ', undefined]
 
 const getSearchQuery = async (req, res) => {
     try {
-        const { cuisine, searchQuery, from = 0, to = 30 } = req.query;
+        const { cuisine, searchQuery, from = 0 } = req.query;
         let recipes;
-        console.log(cuisine, searchQuery, from, to);
-
-        console.log(NOTALLOWED.includes(searchQuery));
 
         if (NOTALLOWED.includes(searchQuery)) {
-            console.log('noni');
-            recipes = await getCuisineRcipes(cuisine, from, to)
+            recipes = await getCuisineRcipes(cuisine)
         } else {
-            console.log('noni222');
             recipes = await Recipe.find({
                 $or: [
                     { title: { $regex: searchQuery, $options: 'i' } }, // Case-insensitive search for recipe title
@@ -30,16 +25,13 @@ const getSearchQuery = async (req, res) => {
     }
 }
 
-const getCuisineRcipes = async (cuisine, from, to) => {
+const getCuisineRcipes = async (cuisine) => {
     let query = {}
 
     if (cuisine !== 'undefined') {
         query = { cuisine };
     }
-
     const recipes = await Recipe.find(query)
-        .skip(parseInt(from))
-        .limit(parseInt(to) - parseInt(from));
 
     return recipes
 }
