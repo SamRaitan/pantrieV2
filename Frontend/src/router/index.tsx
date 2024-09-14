@@ -8,6 +8,7 @@ import Create from '../screens/create/index';
 import ProtectedRoute from './protectedRoute';
 import RecipeDetail from '../screens/recipeDetails';
 import VisitedProfile from '../screens/profiles/visitedProfile';
+import Footer from '../components/shared/footer';
 
 const AppRouter = () => {
     return (
@@ -37,6 +38,7 @@ const AppRouter = () => {
                         <ProtectedRoute exact path="/create-recipe-post" component={Create} />
                     </Switch>
                 </div>
+                <Footer />
             </div>
         </Router>
     );
