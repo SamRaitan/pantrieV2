@@ -36,9 +36,9 @@ export const recipeApi = baseApi.injectEndpoints({
                 body: { userId, rating },
             }),
         }),
-        discoverRecipes: build.query<any, { cuisine?: string; searchQuery?: string; from?: number; to?: number }>({
-            query: ({ cuisine = '', searchQuery = '', from = 0, to = 30 }) => {
-                let queryString = `api/discover?from=${from}&to=${to}`;
+        discoverRecipes: build.query<any, { cuisine?: string; searchQuery?: string; from?: number; }>({
+            query: ({ cuisine = '', searchQuery = '', from = 0 }) => {
+                let queryString = `api/discover?from=${from}`;
                 if (searchQuery) {
                     queryString += `&searchQuery=${searchQuery}`;
                 }

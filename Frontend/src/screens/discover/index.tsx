@@ -1,9 +1,10 @@
 import { useParams } from "react-router-dom";
 import { useLazyDiscoverRecipesQuery } from "../../selectors/recipes";
 import { useEffect, useState } from 'react';
-import { Button, rem, Select } from '@mantine/core';
+import { Button, Container, Group, Pagination, rem, Select, Stack, Text } from '@mantine/core';
 import { FaSearch } from 'react-icons/fa';
 import Loading from '../../components/shared/loader';
+import CardLayout from "../../components/shared/cardLayout";
 
 interface RouteParams {
     cuisine: string;
@@ -15,21 +16,21 @@ function Discover() {
     const { cuisine } = useParams<RouteParams>();
     const [searchData, setData] = useState<string[]>([]);
     const [searchValue, setSearchValue] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
 
-    // Update effect to trigger search whenever cuisine changes
+    // Update effect to trigger search whenever cuisine or page changes
     useEffect(() => {
         if (cuisine) {
-            triggerSearch(buildQuery(cuisine, ''));
+            triggerSearch(buildQuery(cuisine, searchValue));
         }
-    }, [cuisine]); // Listen for changes in cuisine
+    }, [cuisine, searchValue]);
 
-    // Handle search input change
     const handleSearchChange = (query: string) => {
         setSearchValue(query);
 
         if (query.length > 0) {
-            // Ensure the query is added to the data list dynamically
-            const newOptions = [...new Set([query, ...searchData])]; // Add query to options, ensuring uniqueness
+            const newOptions = [...new Set([query, ...searchData])];
             setData(newOptions);
         } else {
             setData([]);
@@ -39,57 +40,76 @@ function Discover() {
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter' && event.currentTarget.value.trim().length > 0) {
             const term = event.currentTarget.value.trim();
-            console.log('Enter key pressed, searching for:', term);
-            triggerSearch(buildQuery(cuisine, term)); // Trigger the search manually
+            setCurrentPage(1); // Reset to the first page when searching
+            triggerSearch(buildQuery(cuisine, term));
         }
     };
 
-    // Fixed buildQuery logic to check for both undefined and non-empty values correctly
     const buildQuery = (cuisine: string, searchTerm: string) => {
-        let query = { cuisine: '', searchQuery: '', from: 0, to: 30 };
+        return {
+            cuisine: cuisine || '',
+            searchQuery: searchTerm || '',
+        };
+    };
 
-        if (cuisine && cuisine !== '') {
-            query.cuisine = cuisine;
-        }
-        if (searchTerm && searchTerm !== '') {
-            query.searchQuery = searchTerm;
-        }
-        return query;
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
     };
 
     if (isLoading) return <Loading />;
     if (isError) return <p>Error loading recipes</p>;
 
+    // Calculate the index range for the current page
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const paginatedData = data?.data?.slice(startIndex, endIndex); // Get the recipes for the current page
+
     return (
-        <div>
-            <Select
-                placeholder="Start typing..."
-                data={searchData.slice(0, 1)}
-                searchable
-                searchValue={searchValue}
-                onSearchChange={handleSearchChange}
-                rightSection={
-                    <Button size="xs" variant="subtle" c="teal" style={{ padding: '0.3rem' }}>
-                        <FaSearch style={{ width: rem(16), height: rem(16) }} />
-                    </Button>
-                }
-                rightSectionWidth={rem(40)} // Adjust to fit the button
-                styles={{
-                    input: { paddingRight: rem(50) }, // Adjust the padding to make space for the button
-                }}
-                onKeyDown={handleKeyDown} // Listen for the 'Enter' key press
-            />
-            {/* Render recipes */}
-            {data?.data?.length > 0 ? (
-                data.data.map((recipe: any) => (
-                    <div key={recipe._id}>
-                        <h2>{recipe.title}</h2>
+        <Container>
+            <Stack>
+                <Text fw={800} pl={10}>Discover</Text>
+                <div>
+                    <Select
+                        placeholder="Start typing..."
+                        data={searchData.slice(0, 1)}
+                        searchable
+                        searchValue={searchValue}
+                        onSearchChange={handleSearchChange}
+                        rightSection={
+                            <Button size="xs" variant="subtle" c="teal" style={{ padding: '0.3rem' }}>
+                                <FaSearch style={{ width: rem(16), height: rem(16) }} />
+                            </Button>
+                        }
+                        rightSectionWidth={rem(40)}
+                        styles={{
+                            input: { paddingRight: rem(50) },
+                        }}
+                        onKeyDown={handleKeyDown}
+                        pb={10}
+                    />
+
+                    {paginatedData?.length > 0 ? (
+                        <CardLayout recipes={{ data: paginatedData }} title={`${searchValue} Results`} />
+                    ) : (
+                        <p>No recipes found</p>
+                    )}
+                </div>
+
+                <Group justify="center" p={10}>
+                    <div style={{ marginTop: 'auto' }}>
+                        {data?.data?.length > itemsPerPage && (
+                            <Pagination
+                                total={Math.ceil(data.data.length / itemsPerPage)} // Calculate total pages based on full data length
+                                value={currentPage}
+                                onChange={handlePageChange}
+                                color="teal"
+                                radius="xl"
+                            />
+                        )}
                     </div>
-                ))
-            ) : (
-                <p>No recipes found</p>
-            )}
-        </div>
+                </Group>
+            </Stack>
+        </Container>
     );
 }
 
