@@ -36,12 +36,6 @@ export const recipeApi = baseApi.injectEndpoints({
                 body: { userId, rating },
             }),
         }),
-        searchRecipes: build.query<any, any>({
-            query: (searchQuery) => ({
-                url: `api/search?query=${searchQuery}`,
-                method: 'GET',
-            }),
-        }),
         discoverRecipes: build.query<any, { cuisine?: string; searchQuery?: string; from?: number; to?: number }>({
             query: ({ cuisine = '', searchQuery = '', from = 0, to = 30 }) => {
                 let queryString = `api/discover?from=${from}&to=${to}`;
@@ -68,5 +62,4 @@ export const {
     useLikeARecipeMutation,
     useRateARecipeMutation,
     useLazyDiscoverRecipesQuery,
-    useLazySearchRecipesQuery,
 } = recipeApi;
