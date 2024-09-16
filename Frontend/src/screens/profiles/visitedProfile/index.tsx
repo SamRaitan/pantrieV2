@@ -1,4 +1,4 @@
-import { Badge, Container, Divider, Grid, Group, Stack, Text, Paper } from '@mantine/core';
+import { Badge, Container, Divider, Grid, Group, Stack, Text } from '@mantine/core';
 import { useParams } from 'react-router-dom';
 import { useFetchUserProfileQuery } from '../../../selectors/profiles';
 import ResponsiveAvatar from './responsiveAvatar';
@@ -11,6 +11,11 @@ type RouteParams = {
 
 function VisitedProfile() {
     const { username } = useParams<RouteParams>();
+    if (username === 'undefined') {
+        console.log(username);
+
+        window.location.href = '/signin';
+    }
     const { data, isLoading, isError, refetch } = useFetchUserProfileQuery(username);
 
     if (isLoading) return <Loading />;
