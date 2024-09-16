@@ -4,10 +4,10 @@ import { Recipe } from '../../types/recipe';
 type Props = {
     width: number;
     recipe: Recipe;
-    isRegular: boolean;
+    zoom: boolean;
 };
 
-function MainCard({ width, recipe, isRegular }: Props) {
+function MainCard({ width, recipe, zoom }: Props) {
 
     return (
         <Card
@@ -18,8 +18,8 @@ function MainCard({ width, recipe, isRegular }: Props) {
                 transition: 'transform 0.2s ease',
             }}
             shadow="lg" padding="md" radius="lg" withBorder w={width}
-            onMouseEnter={(e) => isRegular ? e.currentTarget.style.transform = 'scale(1.05)' : null}
-            onMouseLeave={(e) => isRegular ? e.currentTarget.style.transform = 'scale(1)' : null}>
+            onMouseEnter={(e) => zoom ? e.currentTarget.style.transform = 'scale(1.05)' : null}
+            onMouseLeave={(e) => zoom ? e.currentTarget.style.transform = 'scale(1)' : null}>
             <Card.Section component="a" href={`/posts/${recipe._id}`} style={{ position: 'relative' }}>
                 <Image
                     src={recipe.cloudinary_image}
