@@ -61,38 +61,25 @@ router.get('/posts', async (req, res) => {
 
 router.get('/discover', getSearchQuery)
 
-// router.get('/discover1', async (req, res) => {
+// router.get('/search', async (req, res) => {
 //   try {
-//     const { cuisine, searchQuery, from = 0, to = 30 } = req.query;
+//     const { query } = req.query;
+//     console.log(query);
 
+//     // Search by recipe title or uploader username
+//     const recipes = await Recipe.find({
+//       $or: [
+//         { title: { $regex: query, $options: 'i' } }, // Case-insensitive search for recipe title
+//         { uploader_un: { $regex: query, $options: 'i' } }, // Case-insensitive search for uploader username
+//       ]
+//     }).limit(5); 
 
-//     res.status(200).json({ data: getSearchQuery(searchQuery, cuisine, from, to) });
+//     res.json({ data: recipes });
 //   } catch (err) {
-//     res.status(500).json({ message: 'Error fetching recipes', error: err.message });
+//     res.status(500).json({ message: 'Error searching recipes', error: err.message });
 //   }
 // });
 
-// Add search functionality in the backend
-router.get('/search', async (req, res) => {
-  try {
-    const { query } = req.query;
-    console.log(query);
-
-    // Search by recipe title or uploader username
-    const recipes = await Recipe.find({
-      $or: [
-        { title: { $regex: query, $options: 'i' } }, // Case-insensitive search for recipe title
-        { uploader_un: { $regex: query, $options: 'i' } }, // Case-insensitive search for uploader username
-      ]
-    }).limit(5); // Limit the results to 5 for recommendations
-
-    res.json({ data: recipes });
-  } catch (err) {
-    res.status(500).json({ message: 'Error searching recipes', error: err.message });
-  }
-});
-
-// Get post details
 router.get('/posts/:id', async (req, res) => {
   try {
     const id = req.params.id;
@@ -101,6 +88,59 @@ router.get('/posts/:id', async (req, res) => {
   } catch (err) {
     res.status(500).json({ 'error': err.message });
     console.log(err);
+  }
+});
+
+// Edit an existing recipe
+router.put('/posts/:id/edit', isLoggedIn, upload.single('image'), async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { description, ingredients, steps, cookTime, prepTime, visibility } = req.body;
+
+    // Parse ingredients and steps as they might be sent as JSON strings
+    const parsedIngredients = JSON.parse(ingredients);
+    const parsedSteps = JSON.parse(steps);
+
+    // Find the recipe by ID
+    const recipe = await Recipe.findById(id);
+    if (!recipe) {
+      return res.status(404).json({ error: 'Recipe not found' });
+    }
+
+    // Update the image if a new one is uploaded
+    let updatedRecipeData = {
+      description,
+      ingredients: parsedIngredients,
+      steps: parsedSteps,
+      cookTime,
+      prepTime,
+      visibility
+    };
+
+    if (req.file) {
+      // Delete old image from Cloudinary
+      if (recipe.cloudinary_id) {
+        await cloudinary.uploader.destroy(recipe.cloudinary_id);
+      }
+
+      // Upload new image to Cloudinary
+      const result = await cloudinary.uploader.upload(req.file.path);
+
+      // Update the image information in the recipe
+      updatedRecipeData.cloudinary_image = result.secure_url;
+      updatedRecipeData.cloudinary_id = result.public_id;
+    }
+
+    // Update the recipe in the database
+    const updatedRecipe = await Recipe.findByIdAndUpdate(
+      id,
+      { $set: updatedRecipeData },
+      { new: true }
+    );
+
+    res.status(200).json({ data: 'Recipe updated successfully', updatedRecipe });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 
