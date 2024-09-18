@@ -9,7 +9,6 @@ const cloudinary = require('../../utils/cloudinary');
 const upload = require('../../utils/multer');
 const jwt = require('jsonwebtoken');
 
-// Create a recipe
 router.post('/create', isLoggedIn, upload.single('image'), async (req, res) => {
   try {
     const { title, ingredients, steps, description, image, prepTime, cookTime, servings, dishType, cuisine, visibility } = req.body;
@@ -48,7 +47,6 @@ router.post('/create', isLoggedIn, upload.single('image'), async (req, res) => {
   }
 });
 
-// Get all posts
 router.get('/posts', async (req, res) => {
   try {
     const limit = parseInt(req.query.limit) || 20;
@@ -61,25 +59,6 @@ router.get('/posts', async (req, res) => {
 
 router.get('/discover', getSearchQuery)
 
-// router.get('/search', async (req, res) => {
-//   try {
-//     const { query } = req.query;
-//     console.log(query);
-
-//     // Search by recipe title or uploader username
-//     const recipes = await Recipe.find({
-//       $or: [
-//         { title: { $regex: query, $options: 'i' } }, // Case-insensitive search for recipe title
-//         { uploader_un: { $regex: query, $options: 'i' } }, // Case-insensitive search for uploader username
-//       ]
-//     }).limit(5); 
-
-//     res.json({ data: recipes });
-//   } catch (err) {
-//     res.status(500).json({ message: 'Error searching recipes', error: err.message });
-//   }
-// });
-
 router.get('/posts/:id', async (req, res) => {
   try {
     const id = req.params.id;
@@ -91,24 +70,23 @@ router.get('/posts/:id', async (req, res) => {
   }
 });
 
-// Edit an existing recipe
 router.put('/posts/:id/edit', isLoggedIn, upload.single('image'), async (req, res) => {
   try {
     const { id } = req.params;
-    const { description, ingredients, steps, cookTime, prepTime, visibility } = req.body;
+    const { title, description, ingredients, steps, cookTime, prepTime, visibility } = req.body;
 
-    // Parse ingredients and steps as they might be sent as JSON strings
+    console.log(title);
+
     const parsedIngredients = JSON.parse(ingredients);
     const parsedSteps = JSON.parse(steps);
 
-    // Find the recipe by ID
     const recipe = await Recipe.findById(id);
     if (!recipe) {
       return res.status(404).json({ error: 'Recipe not found' });
     }
 
-    // Update the image if a new one is uploaded
     let updatedRecipeData = {
+      title,
       description,
       ingredients: parsedIngredients,
       steps: parsedSteps,
@@ -122,16 +100,12 @@ router.put('/posts/:id/edit', isLoggedIn, upload.single('image'), async (req, re
       if (recipe.cloudinary_id) {
         await cloudinary.uploader.destroy(recipe.cloudinary_id);
       }
-
-      // Upload new image to Cloudinary
       const result = await cloudinary.uploader.upload(req.file.path);
 
-      // Update the image information in the recipe
       updatedRecipeData.cloudinary_image = result.secure_url;
       updatedRecipeData.cloudinary_id = result.public_id;
     }
 
-    // Update the recipe in the database
     const updatedRecipe = await Recipe.findByIdAndUpdate(
       id,
       { $set: updatedRecipeData },
@@ -144,7 +118,6 @@ router.put('/posts/:id/edit', isLoggedIn, upload.single('image'), async (req, re
   }
 });
 
-// Delete a post
 router.delete('/posts/:postId/delete', async (req, res) => {
   try {
     const { postId } = req.params;
@@ -158,7 +131,6 @@ router.delete('/posts/:postId/delete', async (req, res) => {
   }
 });
 
-// Like a post
 router.post('/posts/:postId/like', async (req, res) => {
   try {
     const { postId } = req.params;
@@ -176,7 +148,6 @@ router.post('/posts/:postId/like', async (req, res) => {
   }
 });
 
-// Unlike a post
 router.post('/posts/:postId/unlike', async (req, res) => {
 
   try {
