@@ -52,6 +52,19 @@ export const recipeApi = baseApi.injectEndpoints({
                 };
             },
         }),
+        editRecipe: build.mutation<any, any>({
+            query: ({ id, formData }) => ({
+                url: `api/posts/${id}/edit`,
+                method: 'PUT',
+                body: formData,
+            }),
+        }),
+        deleteRecipe: build.query<any, any>({
+            query: (recipeId) => ({
+                url: `api/posts/${recipeId}/delete`,
+                method: 'DELETE',
+            }),
+        }),
     }),
 });
 
@@ -62,4 +75,6 @@ export const {
     useLikeARecipeMutation,
     useRateARecipeMutation,
     useLazyDiscoverRecipesQuery,
+    useEditRecipeMutation,
+    useLazyDeleteRecipeQuery
 } = recipeApi;
