@@ -125,7 +125,7 @@ router.delete('/posts/:postId/delete', async (req, res) => {
     await cloudinary.uploader.destroy(post.cloudinary_id);
     await User.findByIdAndUpdate(post.uploader, { $inc: { postsCount: -1 } });
     await Recipe.deleteOne({ '_id': postId });
-    res.json({ 'data': 'deleted' });
+    res.status(200).json({ 'data': 'deleted' });
   } catch (err) {
     res.status(500).json({ 'error': err.message });
   }
