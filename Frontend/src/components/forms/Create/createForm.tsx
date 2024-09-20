@@ -9,6 +9,7 @@ import createSchema from './validation'
 import { useDispatch } from 'react-redux';
 import { usePostRecipesMutation } from '../../../selectors/recipes';
 import { clearUser } from '../../../slice/authSlice';
+import { notifications } from '@mantine/notifications';
 
 type createPostError = {
     error: {
@@ -31,8 +32,8 @@ function CreateForm() {
         initialValues: {
             title: '',
             image: '',
-            ingredients: [], // Map ingredients to values
-            steps: [], // Map steps to values
+            ingredients: [],
+            steps: [],
             description: '',
             cookTime: '',
             prepTime: '',
@@ -119,6 +120,11 @@ function CreateForm() {
 
     const submit = async (data: any) => {
         if (form.validate().hasErrors) {
+            notifications.show({
+                title: 'Oh No Looks Like You Forgot Something!',
+                message: 'make sure you filled all fields, all inputs are required',
+                color: 'red',
+            });
             return form.values;
         } else {
             const formData = new FormData();

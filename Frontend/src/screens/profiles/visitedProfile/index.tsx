@@ -24,7 +24,6 @@ function VisitedProfile() {
     return (
         <Container>
             <Stack>
-                {/* Profile Info Section */}
                 <Grid>
                     <Grid.Col span={12} m={4}>
                         <Stack align="center" justify="center">
