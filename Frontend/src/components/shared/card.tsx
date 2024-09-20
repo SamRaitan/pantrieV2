@@ -1,23 +1,46 @@
-import { Card, Image, Text, Group, Anchor, Rating, Badge, Menu, Modal, Button, Grid } from '@mantine/core';
+import { Card, Image, Text, Group, Anchor, Rating, Badge, Modal, Button, Menu, Grid } from '@mantine/core';
 import { Recipe } from '../../types/recipe';
 import { useDisclosure } from '@mantine/hooks';
+import EditRecipeModal from '../../screens/profiles/myProfile/editModal';
+import { useLazyDeleteRecipeQuery } from '../../selectors/recipes';
+import { notifications } from '@mantine/notifications';
+import Loading from './loader';
+import { RootState } from '../../store/store';
+import { useSelector } from 'react-redux';
 
 type Props = {
     width: number;
     recipe: Recipe;
     zoom: boolean;
+    isMyProfile: boolean;
 };
 
-function MainCard({ width, recipe, zoom }: Props) {
+function MainCard({ width, recipe, zoom, isMyProfile }: Props) {
+    const user = useSelector((state: RootState) => state.auth?.user);
+    const [triggerDeleteRecipe, { isLoading }] = useLazyDeleteRecipeQuery();
     const [opened, { open, close }] = useDisclosure(false);
 
+    const deleteRecipe = async () => {
+        try {
+            await triggerDeleteRecipe(recipe._id).unwrap();
+            notifications.show({
+                title: 'Recipe Deleted',
+                message: `Recipe "${recipe.title}" was successfully deleted.`,
+                color: 'green',
+            });
+        } catch (error) {
+            notifications.show({
+                title: 'Delete Failed',
+                message: 'Failed to delete the recipe. Please try again.',
+                color: 'red',
+            });
+        }
+    };
+
+    if (isLoading) return <Loading />;
 
     return (
         <>
-            <Modal opened={opened} onClose={close} title="Authentication">
-                momo
-            </Modal>
-
             <Card
                 style={{
                     width: '320px',
@@ -64,10 +87,28 @@ function MainCard({ width, recipe, zoom }: Props) {
                         <Text size="xs" c="dimmed">({recipe.ratings.length})</Text>
                     </Grid>
 
-                    <Button size="xs" variant="subtle" c='teal' color='teal' radius="xl" onClick={open}>
-                        •••
-                    </Button>
+                    {user?._id === recipe.uploader_id && (
+                        <div>
+                            <Menu shadow="md" width={200}>
+                                <Menu.Target>
+                                    <Button size="xs" variant="subtle" c='teal' color='teal' radius="xl">
+                                        •••
+                                    </Button>
+                                </Menu.Target>
 
+                                <Menu.Dropdown>
+                                    <Menu.Item onClick={open}>Edit Recipe</Menu.Item>
+                                    <Menu.Item color="red" onClick={deleteRecipe}>
+                                        {isLoading ? 'Deleting...' : 'Delete Recipe'}
+                                    </Menu.Item>
+                                </Menu.Dropdown>
+                            </Menu>
+
+                            <Modal opened={opened} onClose={close} title="Edit Recipe">
+                                <EditRecipeModal recipeId={recipe._id} recipe={recipe} />
+                            </Modal>
+                        </div>
+                    )}
                 </Group>
             </Card>
         </>
