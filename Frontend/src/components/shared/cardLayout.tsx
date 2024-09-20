@@ -20,14 +20,14 @@ function CardLayout({ recipes, title }: Props) {
                         <Center>
                             <SimpleGrid cols={2}>
                                 {recipes.data.map((recipe, index) => (
-                                    <MainCard key={index} recipe={recipe} width={170} zoom={true} isMyProfile={false} />
+                                    <MainCard key={index} recipe={recipe} width={170} zoom={true} />
                                 ))}
                             </SimpleGrid>
                         </Center>
                     ) : (
                         <SimpleGrid cols={{ xs: 3, md: 4 }}>
                             {recipes.data.map((recipe, index) => (
-                                <MainCard key={index} recipe={recipe} width={220} zoom={true} isMyProfile={false} />
+                                <MainCard key={index} recipe={recipe} width={220} zoom={true} />
                             ))}
                         </SimpleGrid>
                     )

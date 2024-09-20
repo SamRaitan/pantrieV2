@@ -12,10 +12,9 @@ type Props = {
     width: number;
     recipe: Recipe;
     zoom: boolean;
-    isMyProfile: boolean;
 };
 
-function MainCard({ width, recipe, zoom, isMyProfile }: Props) {
+function MainCard({ width, recipe, zoom }: Props) {
     const user = useSelector((state: RootState) => state.auth?.user);
     const [triggerDeleteRecipe, { isLoading }] = useLazyDeleteRecipeQuery();
     const [opened, { open, close }] = useDisclosure(false);
