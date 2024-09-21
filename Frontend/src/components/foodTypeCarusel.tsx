@@ -13,7 +13,7 @@ function FoodCuisines() {
                 {cuisinesToFlags.map((cuisine, index) => (
                     <Carousel.Slide key={index} mah={70}>
                         <Stack align="center" justify="center" gap="xs" mx={10}>
-                            <Anchor href={`/discover/${cuisine}`}>
+                            <Anchor href={`/discover/${cuisine.name}`}>
                                 <Avatar color="teal" radius="xl">
                                     <Flag code={cuisine.code} style={{ width: 30, height: 20 }} />
                                 </Avatar>
