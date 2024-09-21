@@ -91,7 +91,9 @@ function Discover() {
                     {paginatedData?.length > 0 ? (
                         <CardLayout recipes={{ data: paginatedData }} title={`${searchValue} Results`} />
                     ) : (
-                        <p>No recipes found</p>
+                        <Group justify="center" m={15}>
+                            <Text fw={600} mb={220}>No recipes found...</Text>
+                        </Group>
                     )}
                 </div>
 
@@ -99,7 +101,7 @@ function Discover() {
                     <div style={{ marginTop: 'auto' }}>
                         {data?.data?.length > itemsPerPage && (
                             <Pagination
-                                total={Math.ceil(data.data.length / itemsPerPage)} // Calculate total pages based on full data length
+                                total={Math.ceil(data.data.length / itemsPerPage)}
                                 value={currentPage}
                                 onChange={handlePageChange}
                                 color="teal"

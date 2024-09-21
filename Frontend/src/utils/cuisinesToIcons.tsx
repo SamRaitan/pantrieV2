@@ -13,7 +13,6 @@ export const cuisinesToFlags = [
     { name: "Thai", code: "TH" },
     { name: "Greek", code: "GR" },
     { name: "Spanish", code: "ES" },
-    { name: "Mediterranean", code: "XA" }, // Placeholder regional code
     { name: "American", code: "US" },
     { name: "Vietnamese", code: "VN" },
     { name: "Korean", code: "KR" },
