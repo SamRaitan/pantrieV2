@@ -5,11 +5,11 @@ function Footer() {
     return (
         <Container mt={50}>
             <Divider my="md" />
-            <footer style={{ padding: '3rem 0', marginTop: 'auto' }}>
-                <Group justify="apart" gap="xl" style={{ marginBottom: '2rem' }} p={15}>
+            <footer style={{ padding: '1.5rem 0', marginTop: 'auto' }}>
+                <Group justify="apart" gap="xl" style={{ marginBottom: '1rem' }} p={15}>
                     {/* Quick Links */}
                     <div>
-                        <Text fw={700} mb={10} color="teal">Quick Links</Text>
+                        <Text fw={700} mb={10} c="teal">Quick Links</Text>
                         <Text component="a" href="/about" size="sm" color="teal" style={{ marginBottom: '0.5rem' }}>About Us</Text>
                         <br />
                         <Text component="a" href="/contact" size="sm" color="teal" style={{ marginBottom: '0.5rem' }}>Contact Us</Text>
@@ -41,8 +41,8 @@ function Footer() {
                         <Text size="sm" color="teal">Email: support@pantrie.com</Text>
                     </div>
                 </Group>
-                <Divider my="xl" />
-                <Text size="sm" color="dimmed" style={{ marginTop: '1rem' }}>
+                <Divider my="md" />
+                <Text size="sm" c="dimmed" style={{ marginTop: '0.5rem' }}>
                     © 2024 Pantrie. All rights reserved.
                 </Text>
             </footer>

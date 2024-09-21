@@ -154,7 +154,7 @@ function CreateForm() {
                         window.location.href = '/signin';
                     }
                 } else {
-
+                    window.location.href = '/';
                 }
             } catch (error) {
                 console.error('Error creating recipe:', error);
