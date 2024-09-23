@@ -7,7 +7,6 @@ function Footer() {
             <Divider my="md" />
             <footer style={{ padding: '1.5rem 0', marginTop: 'auto' }}>
                 <Group justify="apart" gap="xl" style={{ marginBottom: '1rem' }} p={15}>
-                    {/* Quick Links */}
                     <div>
                         <Text fw={700} mb={10} c="teal">Quick Links</Text>
                         <Text component="a" href="/about" size="sm" color="teal" style={{ marginBottom: '0.5rem' }}>About Us</Text>
@@ -17,9 +16,8 @@ function Footer() {
                         <Text component="a" href="/faq" size="sm" color="teal">FAQ</Text>
                     </div>
 
-                    {/* Social Media Links */}
                     <div>
-                        <Text fw={700} mb={10} color="teal">Follow Us</Text>
+                        <Text fw={700} mb={10} c="teal">Follow Us</Text>
                         <Group gap={15}>
                             <ActionIcon component="a" href="https://www.facebook.com" size="lg" variant="outline" radius="xl" color="teal">
                                 <FaFacebook />

@@ -148,7 +148,6 @@ function RecipeDetail() {
                             {recipes?.data.ingredients.map((ingredient, index) => (
                                 <Checkbox
                                     key={index}
-                                    defaultChecked
                                     label={ingredient}
                                     radius="md"
                                     color="teal"
