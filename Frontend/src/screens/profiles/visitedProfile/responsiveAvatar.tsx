@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useMediaQuery } from '@mantine/hooks';
-import { Button, Text } from '@mantine/core';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
+import { Button, Text, Menu, Modal } from '@mantine/core';
 import { RiUserFollowFill, RiUserFollowLine } from 'react-icons/ri';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from '../../../store/store';
 import { useFollowAUserMutation } from '../../../selectors/profiles';
+import { useLogoutMutation } from '../../../selectors/signIn';
+import { clearUser } from '../../../slice/authSlice';
 
 type ResponsiveAvatarProps = {
     src: string;
@@ -15,6 +17,9 @@ type ResponsiveAvatarProps = {
 
 const ResponsiveAvatar: React.FC<ResponsiveAvatarProps> = ({ src, alt, data, refetch }) => {
     const user = useSelector((state: RootState) => state.auth.user);
+    const dispatch = useDispatch();
+
+    const [triggerLogout, { isLoading }] = useLogoutMutation();
 
     const small = useMediaQuery('(max-width: 450px)');
     const medium = useMediaQuery('(min-width: 451px) and (max-width: 950px)');
@@ -25,6 +30,8 @@ const ResponsiveAvatar: React.FC<ResponsiveAvatarProps> = ({ src, alt, data, ref
 
     const [followUser] = useFollowAUserMutation();
     const [follow, setFollower] = useState<boolean>(false);
+
+    const [opened, { open, close }] = useDisclosure(false);
 
     useEffect(() => {
         if (user && data) {
@@ -40,6 +47,16 @@ const ResponsiveAvatar: React.FC<ResponsiveAvatarProps> = ({ src, alt, data, ref
         } catch (error) {
             console.error('Error following/unfollowing the user:', error);
             setFollower(action === 'follow' ? false : true);
+        }
+    };
+
+    const logout = async () => {
+        try {
+            await triggerLogout().unwrap();
+            dispatch(clearUser());
+            console.log("User successfully logged out");
+        } catch (error) {
+            console.error("Logout failed:", error);
         }
     };
 
@@ -66,32 +83,57 @@ const ResponsiveAvatar: React.FC<ResponsiveAvatarProps> = ({ src, alt, data, ref
                     }}
                 />
             </div>
-            <Text mt={10} size="sm" color="dimmed">
+            <Text mt={10} size="sm" c="dimmed">
                 Recipes Uploaded: {data.RecipeCount}
             </Text>
             {user && (
-                <Button
-                    mt={15}
-                    w={ButtonSize}
-                    variant="filled"
-                    color="teal"
-                    radius="lg"
-                    size="md"
-                    onClick={() => handleFollowClick(data.followers.includes(user._id) ? 'unfollow' : 'follow')}
-                >
-                    {follow ? (
-                        <Text fw={500}>
-                            Unfollow <RiUserFollowLine style={{ fontSize: '20px' }} />
-                        </Text>
-                    ) : (
-                        <Text fw={500}>
-                            Follow <RiUserFollowFill style={{ fontSize: '20px' }} />
-                        </Text>
-                    )}
-                </Button>
+                <>
+                    <Button
+                        mt={15}
+                        w={ButtonSize}
+                        variant="filled"
+                        color="teal"
+                        radius="lg"
+                        size="md"
+                        onClick={() =>
+                            handleFollowClick(data.followers.includes(user._id) ? 'unfollow' : 'follow')
+                        }
+                    >
+                        {follow ? (
+                            <Text fw={500}>
+                                Unfollow <RiUserFollowLine style={{ fontSize: '20px' }} />
+                            </Text>
+                        ) : (
+                            <Text fw={500}>
+                                Follow <RiUserFollowFill style={{ fontSize: '20px' }} />
+                            </Text>
+                        )}
+                    </Button>
+
+                    <Menu shadow="md" width={200}>
+                        <Menu.Target>
+                            <Button size="xs" variant="subtle" c="teal" color="teal" radius="xl">
+                                •••
+                            </Button>
+                        </Menu.Target>
+
+                        <Menu.Dropdown>
+                            <Menu.Item onClick={open}>Edit Profile</Menu.Item>
+                            <Menu.Item color="red" onClick={logout}>
+                                {isLoading ? 'Logging out...' : 'Logout'}
+                            </Menu.Item>
+                        </Menu.Dropdown>
+                    </Menu>
+
+                    {/* Edit Profile Modal */}
+                    <Modal opened={opened} onClose={close} title="Edit Profile">
+                        <p>noni</p>
+                    </Modal>
+                </>
             )}
         </div>
     );
 };
 
 export default ResponsiveAvatar;
+

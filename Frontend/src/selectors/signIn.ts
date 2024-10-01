@@ -9,9 +9,15 @@ export const signInApi = baseApi.injectEndpoints({
                 body: userData,
             }),
         }),
+        logout: build.mutation<any, void>({
+            query: () => ({
+                url: 'api/logout',
+                method: 'GET',
+            }),
+        }),
 
     }),
 })
 
 
-export const { useSigninMutation } = signInApi;
+export const { useSigninMutation, useLogoutMutation } = signInApi;
