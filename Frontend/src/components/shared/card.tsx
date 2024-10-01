@@ -1,7 +1,7 @@
 import { Card, Image, Text, Group, Anchor, Rating, Badge, Modal, Button, Menu, Grid } from '@mantine/core';
 import { Recipe } from '../../types/recipe';
 import { useDisclosure } from '@mantine/hooks';
-import EditRecipeModal from '../../screens/profiles/myProfile/editModal';
+import EditRecipeModal from './editModal';
 import { useLazyDeleteRecipeQuery } from '../../selectors/recipes';
 import { notifications } from '@mantine/notifications';
 import Loading from './loader';

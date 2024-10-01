@@ -7,8 +7,8 @@ import {
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useDispatch } from 'react-redux';
-import { clearUser } from '../../../slice/authSlice';
-import { useEditRecipeMutation } from '../../../selectors/recipes';
+import { clearUser } from '../../slice/authSlice';
+import { useEditRecipeMutation } from '../../selectors/recipes';
 import { useState } from 'react';
 
 type Props = {
