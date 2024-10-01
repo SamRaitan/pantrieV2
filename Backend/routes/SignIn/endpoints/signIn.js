@@ -24,7 +24,7 @@ router.post('/signin', async (req, res) => {
 
   const { cookie, token, user } = result;
 
-  res.cookie('STAGE', cookie, { maxAge: maxAge * 1000 })
+  res.cookie('STAGE', cookie, { maxAge: maxAge * 1000 });
   res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
   res.status(200).json({ cookie, user });
 });

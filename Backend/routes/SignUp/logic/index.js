@@ -64,6 +64,9 @@ const signup = async (req, res) => {
         if (err.code === 11000 && err.keyPattern && err.keyPattern.username) {
             return res.status(400).json({ errors: { username: 'Username already taken' } });
         }
+
+        res.cookie('STAGE', cookie, { maxAge: maxAge * 1000 });
+        res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
         res.status(500).json({ message: 'Internal server error' });
     }
 };
