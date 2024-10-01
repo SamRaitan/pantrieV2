@@ -10,7 +10,8 @@ router.get('/signin', (req, res) => {
 
 router.get('/logout', (req, res) => {
   res.cookie('jwt', '', { maxAge: 1 })
-  res.status(200).redirect('/');
+  res.cookie('STAGE', '', { maxAge: 1 })
+  res.status(200).json({ 'data': 'success' });
 })
 
 router.post('/signin', async (req, res) => {
